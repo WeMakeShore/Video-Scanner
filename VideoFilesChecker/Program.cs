@@ -4,6 +4,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+// TODO: Update text files after deletion.
+// TODO: Remove instance requirement for GenerateTextDocuments.
+
 namespace VideoFilesChecker
 {
     class Program
@@ -28,6 +31,8 @@ namespace VideoFilesChecker
 
             VideoDeletion.CheckForVideosToDelete();
 
+            VideoDeletion.DeleteVideos();
+
             if (!VideoDeletion.videosDeleted)
             {
                 Console.WriteLine("\nNo videos were deleted.");
@@ -35,10 +40,10 @@ namespace VideoFilesChecker
             if (VideoDeletion.filenameLengthWarningEnabled == true)
             {
                 Console.ReadKey();
-                UpdateVideosAndDirectories();
             }
             if (VideoDeletion.videosDeleted == true && VideoDeletion.filenameLengthWarningEnabled == false)
             {
+                GenerateTextDocuments gtx = new GenerateTextDocuments(listOfMovies, listOfTvShows, listOfDocumentaryMovies, listOfDocumentaryTv);
                 Console.WriteLine("Press any key to exit.");
                 Console.ReadKey();
             }
