@@ -25,13 +25,7 @@ namespace VideoFilesChecker
 
         static void Main(string[] args)
         {
-            UpdateVideosAndDirectories();
-
-            GenerateTextDocuments gtd = new GenerateTextDocuments(listOfMovies, listOfTvShows, listOfDocumentaryMovies, listOfDocumentaryTv);
-
-            VideoDeletion.CheckForVideosToDelete();
-
-            VideoDeletion.DeleteVideos();
+            RunProgram();
 
             if (!VideoDeletion.videosDeleted)
             {
@@ -46,7 +40,19 @@ namespace VideoFilesChecker
                 GenerateTextDocuments gtx = new GenerateTextDocuments(listOfMovies, listOfTvShows, listOfDocumentaryMovies, listOfDocumentaryTv);
                 Console.WriteLine("Press any key to exit.");
                 Console.ReadKey();
+                RunProgram();
             }
+        }
+
+        private static void RunProgram()
+        {
+            UpdateVideosAndDirectories();
+
+            GenerateTextDocuments gtd = new GenerateTextDocuments(listOfMovies, listOfTvShows, listOfDocumentaryMovies, listOfDocumentaryTv);
+
+            VideoDeletion.CheckForVideosToDelete();
+
+            VideoDeletion.DeleteVideos();
         }
 
         public static void UpdateVideosAndDirectories()
