@@ -52,8 +52,6 @@ namespace VideoFilesChecker
             VideoDeletion.CheckForVideosToDelete();
 
             VideoDeletion.DeleteVideos();
-
-            Console.ReadKey();
         }
 
         public static void UpdateVideosAndDirectories()
