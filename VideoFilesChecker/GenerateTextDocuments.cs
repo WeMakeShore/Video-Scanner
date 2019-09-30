@@ -1,29 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace VideoFilesChecker
 {
-    public class GenerateTextDocuments
+    public static class Generate
     {
         private const string documentsLocation = @"C:\X230 File Share\";
 
-        private List<string> listOfMovies = new List<string>();
-        private List<string> listOfDocumentaryMovies = new List<string>();
-        private List<string> listOfDocumentaryTv = new List<string>();
-        private List<string> listOfTvShows = new List<string>();
-
-        public GenerateTextDocuments(List<string> listOfMovies, List<string> listOfTvShows, List<string> listOfDocumentaryMovies, List<string> listOfDocumentaryTv)
-        {
-            this.listOfMovies = listOfMovies;
-            this.listOfTvShows = listOfTvShows;
-            this.listOfDocumentaryMovies = listOfDocumentaryMovies;
-            this.listOfDocumentaryTv = listOfDocumentaryTv;
-
-            GenerateDocuments();
-        }
-
-        private void GenerateDocuments()
+        public static void GenerateDocuments()
         {
             GenerateMovieDocument();
 
@@ -34,52 +18,52 @@ namespace VideoFilesChecker
             GenerateDocumentaryTvDocument();
         }
 
-        private void GenerateMovieDocument()
+        private static void GenerateMovieDocument()
         {
             string movieDocumentLocation = documentsLocation + @"Movies.txt";
 
             using (StreamWriter sw = new StreamWriter(movieDocumentLocation))
             {
-                foreach(string movie in listOfMovies)
+                foreach(string movie in Program.listOfMovies)
                 {
                     sw.WriteLine(movie);
                 }
             }
         }
 
-        private void GenerateTvShowsDocument()
+        private static void GenerateTvShowsDocument()
         {
             string tvShowsDocumentLocation = documentsLocation + "TV Shows.txt";
 
             using (StreamWriter sw = new StreamWriter(tvShowsDocumentLocation))
             {
-                foreach (string tvShow in listOfTvShows)
+                foreach (string tvShow in Program.listOfTvShows)
                 {
                     sw.WriteLine(tvShow);
                 }
             }
         }
 
-        private void GenerateDocumentaryMovieDocument()
+        private static void GenerateDocumentaryMovieDocument()
         {
             string documentaryDocumentLocation = documentsLocation + @"Documentary Movies.txt";
 
             using (StreamWriter sw = new StreamWriter(documentaryDocumentLocation))
             {
-                foreach(string documentaryMovie in listOfDocumentaryMovies)
+                foreach(string documentaryMovie in Program.listOfDocumentaryMovies)
                 {
                     sw.WriteLine(documentaryMovie);
                 }
             }
         }
 
-        private void GenerateDocumentaryTvDocument()
+        private static void GenerateDocumentaryTvDocument()
         {
             string documentaryTvLocation = documentsLocation + @"Documentary TV.txt";
 
             using (StreamWriter sw = new StreamWriter(documentaryTvLocation))
             {
-                foreach(string documentaryTv in listOfDocumentaryTv)
+                foreach(string documentaryTv in Program.listOfDocumentaryTv)
                 {
                     sw.WriteLine(documentaryTv);
                 }

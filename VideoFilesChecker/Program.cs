@@ -4,9 +4,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-// TODO: Update text files after deletion.
-// TODO: Remove instance requirement for GenerateTextDocuments.
-
 namespace VideoFilesChecker
 {
     class Program
@@ -31,13 +28,15 @@ namespace VideoFilesChecker
             {
                 Console.WriteLine("\nNo videos were deleted.");
             }
+
             if (VideoDeletion.filenameLengthWarningEnabled == true)
             {
                 Console.ReadKey();
             }
+
             if (VideoDeletion.videosDeleted == true && VideoDeletion.filenameLengthWarningEnabled == false)
             {
-                GenerateTextDocuments gtx = new GenerateTextDocuments(listOfMovies, listOfTvShows, listOfDocumentaryMovies, listOfDocumentaryTv);
+                Generate.GenerateDocuments();
                 Console.WriteLine("Press any key to exit.");
                 Console.ReadKey();
                 RunProgram();
@@ -48,11 +47,13 @@ namespace VideoFilesChecker
         {
             UpdateVideosAndDirectories();
 
-            GenerateTextDocuments gtd = new GenerateTextDocuments(listOfMovies, listOfTvShows, listOfDocumentaryMovies, listOfDocumentaryTv);
+            Generate.GenerateDocuments();
 
             VideoDeletion.CheckForVideosToDelete();
 
             VideoDeletion.DeleteVideos();
+
+            Console.ReadKey();
         }
 
         public static void UpdateVideosAndDirectories()
@@ -132,7 +133,7 @@ namespace VideoFilesChecker
 
         public static void GetDocumentaryMovies()
         {
-            if(Directory.Exists(documentaryMoviesInExternalDrivePath))
+            if (Directory.Exists(documentaryMoviesInExternalDrivePath))
             {
                 var tempDocumentaryMoviesInExternalDrivePath = Directory.GetFiles(documentaryMoviesInExternalDrivePath).Where(m => !m.EndsWith(".srt")).Select(m => Path.GetFileNameWithoutExtension(m));
 
@@ -151,7 +152,7 @@ namespace VideoFilesChecker
 
         public static void GetDocumentaryTv()
         {
-            if(Directory.Exists(documentaryTvInExternalDrivePath))
+            if (Directory.Exists(documentaryTvInExternalDrivePath))
             {
                 var tempDocumentaryTvInExternalDrivePath = Directory.GetDirectories(documentaryTvInExternalDrivePath).Select(m => Path.GetFileNameWithoutExtension(m));
 

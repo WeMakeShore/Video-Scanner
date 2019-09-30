@@ -4,8 +4,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Microsoft.VisualBasic.FileIO;
 
-//TODO: Add a directory deletion component. Deletes after 3 days, rather than going to the recycling bin.
-
 namespace VideoFilesChecker
 {
     static class VideoDeletion
