@@ -3,29 +3,25 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace VideoFilesChecker
 {
     class Program
     {
+        //public static string moviesInDockPath = @"C:\Video-Test\Movies Dock";
+        //public static string moviesInExternalDrivePath = @"C:\Video-Test\Movies";
+        //public static string tvShowsInDockPath = @"C:\Video-Test\TV Shows";
+        //public static string tvShowsInExternalDrivePath = @"C:\Video-Test\TV Shows Dock";
+        //public static string documentaryMoviesInExternalDrivePath = @"C:\Video-Test\Documentary Movies";
+        //public static string documentaryTvInExternalDrivePath = @"C:\Video-Test\Documentary TV";
 
-        public static string moviesInDockPath = @"C:\Video-Test\Movies Dock";
-        public static string moviesInExternalDrivePath = @"C:\Video-Test\Movies";
-        public static string tvShowsInDockPath = @"C:\Video-Test\TV Shows";
-        public static string tvShowsInExternalDrivePath = @"C:\Video-Test\TV Shows Dock";
-        public static string documentaryMoviesInExternalDrivePath = @"C:\Video-Test\Documentary Movies";
-        public static string documentaryTvInExternalDrivePath = @"C:\Video-Test\Documentary TV";
-
-        //public static string moviesInDockPath = @"E:\Media\Movies";
-        //public static string moviesInExternalDrivePath = @"D:\Plex (External Hard Drive)\Movies";
-        //public static string tvShowsInDockPath = @"E:\Media\TV Shows";
-        //public static string tvShowsInExternalDrivePath = @"D:\Plex (External Hard Drive)\TV Shows";
-        //public static string documentaryMoviesInExternalDrivePath = @"D:\Plex (External Hard Drive)\Documentary Movies";
-        //public static string documentaryTvInExternalDrivePath = @"D:\Plex (External Hard Drive)\Documentary TV";
+        public static string moviesInDockPath = @"E:\Media\Movies";
+        public static string moviesInExternalDrivePath = @"D:\Plex (External Hard Drive)\Movies";
+        public static string tvShowsInDockPath = @"E:\Media\TV Shows";
+        public static string tvShowsInExternalDrivePath = @"D:\Plex (External Hard Drive)\TV Shows";
+        public static string documentaryMoviesInExternalDrivePath = @"D:\Plex (External Hard Drive)\Documentary Movies";
+        public static string documentaryTvInExternalDrivePath = @"D:\Plex (External Hard Drive)\Documentary TV";
 
         public static List<string> listOfMovies = new List<string>();
         public static List<string> listOfTvShows = new List<string>();
@@ -43,10 +39,9 @@ namespace VideoFilesChecker
 
             if (VideoDeletion.videosDeleted == true && VideoDeletion.filenameLengthWarningEnabled == false)
             {
-                Generate.GenerateDocuments();
-                Console.WriteLine("Press any key to exit.");
                 Console.ReadKey();
-                RunProgram();
+                Console.WriteLine("Press any key to exit.");
+                UpdateVideosAndDirectories();
             }
         }
 
@@ -54,17 +49,50 @@ namespace VideoFilesChecker
         {
             UpdateVideosAndDirectories();
 
-            Generate.GenerateDocuments();
-
             Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(new Videos(listOfMovies.ToArray(), listOfTvShows.ToArray(), listOfDocumentaryMovies.ToArray(), listOfTvShows.ToArray())); }).Wait();
 
             Task.Run(async () => { await CreateHttpRequest.CreateGETRequest(); }).Wait();
 
-            // TODO Alter CheckForVideosToDelete() to use GET data
+            PrintGETData();
 
             VideoDeletion.CheckForVideosToDelete();
 
             VideoDeletion.DeleteVideos();
+        }
+
+        public static void PrintGETData()
+        {
+
+            foreach (string movie in VideoDeletion.movieDeletionRequests)
+            {
+                Console.WriteLine("GET [movie]: " + movie);
+            }
+
+            Console.WriteLine();
+
+
+            foreach (string tvShow in VideoDeletion.tvShowDeletionRequests)
+            {
+                Console.WriteLine("GET [TV Show]: " + tvShow);
+            }
+
+            Console.WriteLine();
+
+
+            foreach (string documentaryMovies in VideoDeletion.documentaryMovieDeletionRequests)
+            {
+                Console.WriteLine("GET [Documentary Movies]: " + documentaryMovies);
+            }
+
+            Console.WriteLine();
+
+
+            foreach (string documentaryTv in VideoDeletion.docummentaryTvDeletionRequests)
+            {
+                Console.WriteLine("GET [Documentary TV]: " + documentaryTv);
+            }
+
+            Console.WriteLine();
         }
 
         public static void UpdateVideosAndDirectories()

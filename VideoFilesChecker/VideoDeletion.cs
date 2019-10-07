@@ -8,15 +8,15 @@ namespace VideoFilesChecker
 {
     static class VideoDeletion
     {
-        private const string movieDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\Movies to Delete.txt";
-        private const string tvDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\TV Shows to Delete.txt";
-        private const string documentaryMovieDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\Documentary Movies to Delete.txt";
-        private const string documentaryTvDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\Documentary TV to Delete.txt";
+        //private const string movieDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\Movies to Delete.txt";
+        //private const string tvDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\TV Shows to Delete.txt";
+        //private const string documentaryMovieDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\Documentary Movies to Delete.txt";
+        //private const string documentaryTvDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\Documentary TV to Delete.txt";
 
-        private static List<string> movieDeletionRequests = new List<string>();
-        private static List<string> tvShowDeletionRequests = new List<string>();
-        private static List<string> documentaryMovieDeletionRequests = new List<string>();
-        private static List<string> docummentaryTvDeletionRequests = new List<string>();
+        public static List<string> movieDeletionRequests = new List<string>();
+        public static List<string> tvShowDeletionRequests = new List<string>();
+        public static List<string> documentaryMovieDeletionRequests = new List<string>();
+        public static List<string> docummentaryTvDeletionRequests = new List<string>();
 
         private static List<string> movies = new List<string>();
         private static List<string> tvShows = new List<string>();
@@ -26,124 +26,32 @@ namespace VideoFilesChecker
         public static bool videosDeleted = false;
         public static bool filenameLengthWarningEnabled = false;
 
-        private static bool firstScan = true;
+        //private static bool firstScan = true;
 
         public static void CheckForVideosToDelete()
         {
-
-            if (firstScan == true)
-            {
-                Console.Clear();
-                firstScan = false;
-            }
-
-            GetVideoDeletionRequests();
-
             GetExtensionAndPathOfVideos();
-        }
-
-        private static void GetVideoDeletionRequests()
-        {
-            using (StreamReader sr = new StreamReader(movieDeletionRequestsPath, true))
-            {
-                string tempVidString;
-
-                while ((tempVidString = sr.ReadLine()) != null)
-                {
-                    if (tempVidString.Length < 3)
-                    {
-                        filenameLengthWarningEnabled = true;
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("The file: "); Console.ForegroundColor = ConsoleColor.Red; Console.Write($"'{tempVidString}'"); Console.ForegroundColor = ConsoleColor.Yellow; Console.Write(" was not added as a video to delete as the filename length is less than 2.\n"); Console.ResetColor();
-                        break;
-                    }
-
-                    if ((!string.IsNullOrWhiteSpace(tempVidString)))
-                    {
-                        movieDeletionRequests.Add(tempVidString);
-                    }
-                }
-            }
-
-            using (StreamReader sr = new StreamReader(tvDeletionRequestsPath, true))
-            {
-                string tempVidString;
-
-                while ((tempVidString = sr.ReadLine()) != null)
-                {
-                    if (tempVidString.Length < 3)
-                    {
-                        filenameLengthWarningEnabled = true;
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("The file: "); Console.ForegroundColor = ConsoleColor.Red; Console.Write($"'{tempVidString}'"); Console.ForegroundColor = ConsoleColor.Yellow; Console.Write(" was not added as a video to delete as the filename length is less than 2.\n"); Console.ResetColor();
-                        break;
-                    }
-
-                    if ((!string.IsNullOrWhiteSpace(tempVidString)))
-                    {
-                        tvShowDeletionRequests.Add(tempVidString);
-                    }
-                }
-            }
-
-            using (StreamReader sr = new StreamReader(documentaryMovieDeletionRequestsPath, true))
-            {
-                string tempVidString;
-
-                while ((tempVidString = sr.ReadLine()) != null)
-                {
-                    if (tempVidString.Length < 3)
-                    {
-                        filenameLengthWarningEnabled = true;
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("The file: "); Console.ForegroundColor = ConsoleColor.Red; Console.Write($"'{tempVidString}'"); Console.ForegroundColor = ConsoleColor.Yellow; Console.Write(" was not added as a video to delete as the filename length is less than 2.\n"); Console.ResetColor();
-                        break;
-                    }
-
-                    if ((!string.IsNullOrWhiteSpace(tempVidString)))
-                    {
-                        documentaryMovieDeletionRequests.Add(tempVidString);
-                    }
-                }
-            }
-
-            using (StreamReader sr = new StreamReader(documentaryTvDeletionRequestsPath, true))
-            {
-                string tempVidString;
-
-                while ((tempVidString = sr.ReadLine()) != null)
-                {
-                    if (tempVidString.Length < 3)
-                    {
-                        filenameLengthWarningEnabled = true;
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("The file: "); Console.ForegroundColor = ConsoleColor.Red; Console.Write($"'{tempVidString}'"); Console.ForegroundColor = ConsoleColor.Yellow; Console.Write(" was not added as a video to delete as the filename length is less than 2.\n"); Console.ResetColor();
-                        break;
-                    }
-
-                    if ((!string.IsNullOrWhiteSpace(tempVidString)))
-                    {
-                        docummentaryTvDeletionRequests.Add(tempVidString);
-                    }
-                }
-            }
         }
 
         private static void GetExtensionAndPathOfVideos()
         {
             //get video files
             for (int i = 0; i <= movieDeletionRequests.Count - 1; i++)
-            {
+            {                
                 string[] moviesIndock = Directory.GetFiles(Program.moviesInDockPath + @"\", movieDeletionRequests[i] + "*.*");
-                movies.AddRange(moviesIndock);
+               
+                movies.AddRange(moviesIndock);        
 
                 string[] moviesInExternal = Directory.GetFiles(Program.moviesInExternalDrivePath + @"\", movieDeletionRequests[i] + "*.*");
+        
                 movies.AddRange(moviesInExternal);
-            }
+                
+           }
 
             for (int i = 0; i <= documentaryMovieDeletionRequests.Count - 1; i++)
             {
                 string[] docMoviesInExternal = Directory.GetFiles(Program.documentaryMoviesInExternalDrivePath + @"\", documentaryMovieDeletionRequests[i] + "*.*");
+
                 documentaryMovies.AddRange(docMoviesInExternal);
             }
 

@@ -41,8 +41,7 @@ namespace VideoFilesChecker
 
             response.Dispose();
 
-            return responseString;
-  
+            return responseString + Environment.NewLine; 
         }
 
         private static async Task<string>GetJsonData()
@@ -59,9 +58,14 @@ namespace VideoFilesChecker
 
             var jsonData = JsonConvert.DeserializeObject<Videos>(responseBody);
 
+            VideoDeletion.movieDeletionRequests.AddRange(jsonData.Movies);
+            VideoDeletion.tvShowDeletionRequests.AddRange(jsonData.TvShows);
+            VideoDeletion.documentaryMovieDeletionRequests.AddRange(jsonData.DocumentaryMovies);
+            VideoDeletion.docummentaryTvDeletionRequests.AddRange(jsonData.DocumentaryTv);
+
             data.Dispose();
 
-            return responseBody;
+            return responseBody + Environment.NewLine;
         }
     }
 }
