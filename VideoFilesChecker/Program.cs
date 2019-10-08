@@ -9,19 +9,19 @@ namespace VideoFilesChecker
 {
     class Program
     {
-        public static string moviesInDockPath = @"C:\Video-Test\Movies Dock";
-        public static string moviesInExternalDrivePath = @"C:\Video-Test\Movies";
-        public static string tvShowsInDockPath = @"C:\Video-Test\TV Shows";
-        public static string tvShowsInExternalDrivePath = @"C:\Video-Test\TV Shows Dock";
-        public static string documentaryMoviesInExternalDrivePath = @"C:\Video-Test\Documentary Movies";
-        public static string documentaryTvInExternalDrivePath = @"C:\Video-Test\Documentary TV";
+        //public static string moviesInDockPath = @"C:\Video-Test\Movies Dock";
+        //public static string moviesInExternalDrivePath = @"C:\Video-Test\Movies";
+        //public static string tvShowsInDockPath = @"C:\Video-Test\TV Shows";
+        //public static string tvShowsInExternalDrivePath = @"C:\Video-Test\TV Shows Dock";
+        //public static string documentaryMoviesInExternalDrivePath = @"C:\Video-Test\Documentary Movies";
+        //public static string documentaryTvInExternalDrivePath = @"C:\Video-Test\Documentary TV";
 
-        //public static string moviesInDockPath = @"E:\Media\Movies";
-        //public static string moviesInExternalDrivePath = @"D:\Plex (External Hard Drive)\Movies";
-        //public static string tvShowsInDockPath = @"E:\Media\TV Shows";
-        //public static string tvShowsInExternalDrivePath = @"D:\Plex (External Hard Drive)\TV Shows";
-        //public static string documentaryMoviesInExternalDrivePath = @"D:\Plex (External Hard Drive)\Documentary Movies";
-        //public static string documentaryTvInExternalDrivePath = @"D:\Plex (External Hard Drive)\Documentary TV";
+        public static string moviesInDockPath = @"E:\Media\Movies";
+        public static string moviesInExternalDrivePath = @"D:\Plex (External Hard Drive)\Movies";
+        public static string tvShowsInDockPath = @"E:\Media\TV Shows";
+        public static string tvShowsInExternalDrivePath = @"D:\Plex (External Hard Drive)\TV Shows";
+        public static string documentaryMoviesInExternalDrivePath = @"D:\Plex (External Hard Drive)\Documentary Movies";
+        public static string documentaryTvInExternalDrivePath = @"D:\Plex (External Hard Drive)\Documentary TV";
 
         public static List<string> listofMoviesWithoutFilePath = new List<string>();
         public static List<string> listOfTvShowsWithoutFilePath = new List<string>();
