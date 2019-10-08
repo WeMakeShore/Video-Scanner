@@ -33,7 +33,7 @@ namespace VideoFilesChecker
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "3dad037f-e4a2-49ad-abf8-f80ec281d98b");
 
             var response = await client.PostAsync(
-                "http://post.local/test.php",
+                "http://plex.local/api/update-videos.php",
                 new StringContent(data, Encoding.UTF8, "application/json") 
                 );
 
@@ -46,10 +46,12 @@ namespace VideoFilesChecker
 
         private static async Task<string>GetJsonData()
         {
+            Console.WriteLine("GET: Starting request.\n");
+            
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "3dad037f-e4a2-49ad-abf8-f80ec281d98b");
 
             var data = await client.GetAsync(
-                "http://post.local/video-json.php"
+                "http://plex.local/api/get-videos-for-deletion.php"
                 );
 
             data.EnsureSuccessStatusCode();
@@ -57,6 +59,8 @@ namespace VideoFilesChecker
             var responseBody = await data.Content.ReadAsStringAsync();
 
             var jsonData = JsonConvert.DeserializeObject<Videos>(responseBody);
+
+            Console.WriteLine("GET: Request completed.\n");
 
             VideoDeletion.movieDeletionRequests.AddRange(jsonData.Movies);
             VideoDeletion.tvShowDeletionRequests.AddRange(jsonData.TvShows);

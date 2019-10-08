@@ -9,24 +9,24 @@ namespace VideoFilesChecker
 {
     class Program
     {
-        //public static string moviesInDockPath = @"C:\Video-Test\Movies Dock";
-        //public static string moviesInExternalDrivePath = @"C:\Video-Test\Movies";
-        //public static string tvShowsInDockPath = @"C:\Video-Test\TV Shows";
-        //public static string tvShowsInExternalDrivePath = @"C:\Video-Test\TV Shows Dock";
-        //public static string documentaryMoviesInExternalDrivePath = @"C:\Video-Test\Documentary Movies";
-        //public static string documentaryTvInExternalDrivePath = @"C:\Video-Test\Documentary TV";
+        public static string moviesInDockPath = @"C:\Video-Test\Movies Dock";
+        public static string moviesInExternalDrivePath = @"C:\Video-Test\Movies";
+        public static string tvShowsInDockPath = @"C:\Video-Test\TV Shows";
+        public static string tvShowsInExternalDrivePath = @"C:\Video-Test\TV Shows Dock";
+        public static string documentaryMoviesInExternalDrivePath = @"C:\Video-Test\Documentary Movies";
+        public static string documentaryTvInExternalDrivePath = @"C:\Video-Test\Documentary TV";
 
-        public static string moviesInDockPath = @"E:\Media\Movies";
-        public static string moviesInExternalDrivePath = @"D:\Plex (External Hard Drive)\Movies";
-        public static string tvShowsInDockPath = @"E:\Media\TV Shows";
-        public static string tvShowsInExternalDrivePath = @"D:\Plex (External Hard Drive)\TV Shows";
-        public static string documentaryMoviesInExternalDrivePath = @"D:\Plex (External Hard Drive)\Documentary Movies";
-        public static string documentaryTvInExternalDrivePath = @"D:\Plex (External Hard Drive)\Documentary TV";
+        //public static string moviesInDockPath = @"E:\Media\Movies";
+        //public static string moviesInExternalDrivePath = @"D:\Plex (External Hard Drive)\Movies";
+        //public static string tvShowsInDockPath = @"E:\Media\TV Shows";
+        //public static string tvShowsInExternalDrivePath = @"D:\Plex (External Hard Drive)\TV Shows";
+        //public static string documentaryMoviesInExternalDrivePath = @"D:\Plex (External Hard Drive)\Documentary Movies";
+        //public static string documentaryTvInExternalDrivePath = @"D:\Plex (External Hard Drive)\Documentary TV";
 
-        public static List<string> listOfMovies = new List<string>();
-        public static List<string> listOfTvShows = new List<string>();
-        public static List<string> listOfDocumentaryMovies = new List<string>();
-        public static List<string> listOfDocumentaryTv = new List<string>();
+        public static List<string> listofMoviesWithoutFilePath = new List<string>();
+        public static List<string> listOfTvShowsWithoutFilePath = new List<string>();
+        public static List<string> listOfDocumentaryMoviesWithoutFilePath = new List<string>();
+        public static List<string> listOfDocumentaryTvShowsWithoutFilePath = new List<string>();
 
         static void Main(string[] args)
         {
@@ -39,8 +39,8 @@ namespace VideoFilesChecker
 
             if (VideoDeletion.videosDeleted == true && VideoDeletion.filenameLengthWarningEnabled == false)
             {
-                Console.ReadKey();
                 Console.WriteLine("Press any key to exit.");
+                Console.ReadKey();
                 UpdateVideosAndDirectories();
             }
         }
@@ -49,7 +49,7 @@ namespace VideoFilesChecker
         {
             UpdateVideosAndDirectories();
 
-            Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(new Videos(listOfMovies.ToArray(), listOfTvShows.ToArray(), listOfDocumentaryMovies.ToArray(), listOfTvShows.ToArray())); }).Wait();
+            Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(new Videos(listofMoviesWithoutFilePath.ToArray(), listOfTvShowsWithoutFilePath.ToArray(), listOfDocumentaryMoviesWithoutFilePath.ToArray(), listOfTvShowsWithoutFilePath.ToArray())); }).Wait();
 
             Task.Run(async () => { await CreateHttpRequest.CreateGETRequest(); }).Wait();
 
@@ -62,13 +62,15 @@ namespace VideoFilesChecker
 
         public static void PrintGETData()
         {
-
             foreach (string movie in VideoDeletion.movieDeletionRequests)
             {
                 Console.WriteLine("GET [movie]: " + movie);
             }
 
-            Console.WriteLine();
+            if (VideoDeletion.movieDeletionRequests.Count > 0)
+            {
+                Console.WriteLine();
+            }
 
 
             foreach (string tvShow in VideoDeletion.tvShowDeletionRequests)
@@ -76,7 +78,10 @@ namespace VideoFilesChecker
                 Console.WriteLine("GET [TV Show]: " + tvShow);
             }
 
-            Console.WriteLine();
+            if (VideoDeletion.tvShowDeletionRequests.Count > 0)
+            {
+                Console.WriteLine();
+            }
 
 
             foreach (string documentaryMovies in VideoDeletion.documentaryMovieDeletionRequests)
@@ -84,7 +89,10 @@ namespace VideoFilesChecker
                 Console.WriteLine("GET [Documentary Movies]: " + documentaryMovies);
             }
 
-            Console.WriteLine();
+            if (VideoDeletion.documentaryMovieDeletionRequests.Count > 0)
+            {
+                Console.WriteLine();
+            }
 
 
             foreach (string documentaryTv in VideoDeletion.docummentaryTvDeletionRequests)
@@ -92,7 +100,10 @@ namespace VideoFilesChecker
                 Console.WriteLine("GET [Documentary TV]: " + documentaryTv);
             }
 
-            Console.WriteLine();
+            if (VideoDeletion.docummentaryTvDeletionRequests.Count > 0)
+            {
+                Console.WriteLine();
+            }
         }
 
         public static void UpdateVideosAndDirectories()
@@ -116,7 +127,7 @@ namespace VideoFilesChecker
                 {
                     string movieTempString = Regex.Replace(movie, @"\(.*?\)", String.Empty);
                     Console.WriteLine("Movie (Dock): " + movieTempString);
-                    listOfMovies.Add(movieTempString.Trim());
+                    listofMoviesWithoutFilePath.Add(movieTempString.Trim());
                 }
             }
 
@@ -130,13 +141,13 @@ namespace VideoFilesChecker
                 {
                     string movieTempString = Regex.Replace(movie, @"\(.*?\)", String.Empty);
                     Console.WriteLine("Movie (External Drive): " + movieTempString);
-                    listOfMovies.Add(movieTempString.Trim());
+                    listofMoviesWithoutFilePath.Add(movieTempString.Trim());
                 }
             }
 
             Console.WriteLine(String.Empty);
 
-            listOfMovies.Sort();
+            listofMoviesWithoutFilePath.Sort();
         }
 
         public static void GetTvShows()
@@ -148,7 +159,7 @@ namespace VideoFilesChecker
                 foreach (string tvShow in tempTvShowsInDockPath)
                 {
                     Console.WriteLine("Tv Show (Dock): " + tvShow);
-                    listOfTvShows.Add(tvShow);
+                    listOfTvShowsWithoutFilePath.Add(tvShow);
                 }
             }
 
@@ -161,13 +172,13 @@ namespace VideoFilesChecker
                 foreach (string tvShow in temptvShowsInExternalDrivePath)
                 {
                     Console.WriteLine("Tv Show (External Drive): " + tvShow);
-                    listOfTvShows.Add(tvShow);
+                    listOfTvShowsWithoutFilePath.Add(tvShow);
                 }
             }
 
             Console.WriteLine(String.Empty);
 
-            listOfTvShows.Sort();
+            listOfTvShowsWithoutFilePath.Sort();
         }
 
         public static void GetDocumentaryMovies()
@@ -180,13 +191,13 @@ namespace VideoFilesChecker
                 {
                     string documentaryMovieTempString = Regex.Replace(documentaryMovie, @"\(.*?\)", String.Empty);
                     Console.WriteLine("Documentary Movie (External Drive): " + documentaryMovieTempString);
-                    listOfDocumentaryMovies.Add(documentaryMovieTempString);
+                    listOfDocumentaryMoviesWithoutFilePath.Add(documentaryMovieTempString);
                 }
             }
 
             Console.WriteLine(String.Empty);
 
-            listOfDocumentaryMovies.Sort();
+            listOfDocumentaryMoviesWithoutFilePath.Sort();
         }
 
         public static void GetDocumentaryTv()
@@ -198,13 +209,13 @@ namespace VideoFilesChecker
                 foreach (string documentaryTv in tempDocumentaryTvInExternalDrivePath)
                 {
                     Console.WriteLine(@"Documentary Tv (External Drive): " + documentaryTv);
-                    listOfDocumentaryTv.Add(documentaryTv);
+                    listOfDocumentaryTvShowsWithoutFilePath.Add(documentaryTv);
                 }
             }
 
             Console.WriteLine(String.Empty);
 
-            listOfDocumentaryTv.Sort();
+            listOfDocumentaryTvShowsWithoutFilePath.Sort();
         }
     }
 }

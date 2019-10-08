@@ -24,7 +24,7 @@ namespace VideoFilesChecker
 
             using (StreamWriter sw = new StreamWriter(movieDocumentLocation))
             {
-                foreach(string movie in Program.listOfMovies)
+                foreach(string movie in Program.listofMoviesWithoutFilePath)
                 {
                     sw.WriteLine(movie);
                 }
@@ -37,7 +37,7 @@ namespace VideoFilesChecker
 
             using (StreamWriter sw = new StreamWriter(tvShowsDocumentLocation))
             {
-                foreach (string tvShow in Program.listOfTvShows)
+                foreach (string tvShow in Program.listOfTvShowsWithoutFilePath)
                 {
                     sw.WriteLine(tvShow);
                 }
@@ -50,7 +50,7 @@ namespace VideoFilesChecker
 
             using (StreamWriter sw = new StreamWriter(documentaryDocumentLocation))
             {
-                foreach(string documentaryMovie in Program.listOfDocumentaryMovies)
+                foreach(string documentaryMovie in Program.listOfDocumentaryMoviesWithoutFilePath)
                 {
                     sw.WriteLine(documentaryMovie);
                 }
@@ -63,7 +63,7 @@ namespace VideoFilesChecker
 
             using (StreamWriter sw = new StreamWriter(documentaryTvLocation))
             {
-                foreach(string documentaryTv in Program.listOfDocumentaryTv)
+                foreach(string documentaryTv in Program.listOfDocumentaryTvShowsWithoutFilePath)
                 {
                     sw.WriteLine(documentaryTv);
                 }
