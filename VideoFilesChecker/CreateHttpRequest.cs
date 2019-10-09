@@ -30,7 +30,7 @@ namespace VideoFilesChecker
         {
             var data = new JavaScriptSerializer().Serialize(dataToPost);
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "3dad037f-e4a2-49ad-abf8-f80ec281d98b");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "UIE#G{dQ#<xCXhQ%I.9:G#U<FzpisOxDkhS*e'L7dxes5((]TpmFi!!GvLU(X>0");
 
             var response = await client.PostAsync(
                 "http://plex.local/api/update-videos.php",
@@ -48,7 +48,7 @@ namespace VideoFilesChecker
         {
             Console.WriteLine("GET: Starting request.\n");
             
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "3dad037f-e4a2-49ad-abf8-f80ec281d98b");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "UIE#G{dQ#<xCXhQ%I.9:G#U<FzpisOxDkhS*e'L7dxes5((]TpmFi!!GvLU(X>0");
 
             var data = await client.GetAsync(
                 "http://plex.local/api/get-videos-for-deletion.php"
