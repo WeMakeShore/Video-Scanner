@@ -37,6 +37,8 @@ namespace VideoFilesChecker
                 new StringContent(data, Encoding.UTF8, "application/json") 
                 );
 
+            response.EnsureSuccessStatusCode();
+
             var responseString = await response.Content.ReadAsStringAsync();
 
             response.Dispose();
