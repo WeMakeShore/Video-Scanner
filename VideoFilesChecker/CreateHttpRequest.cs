@@ -33,7 +33,7 @@ namespace VideoFilesChecker
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "UIE#G{dQ#<xCXhQ%I.9:G#U<FzpisOxDkhS*e'L7dxes5((]TpmFi!!GvLU(X>0");
 
             var response = await client.PostAsync(
-                "https://mewstech.com/plex/api/update-videos.php",
+                "https://www.mewstech.com/plex/api/update-videos.php",
                 new StringContent(data, Encoding.UTF8, "application/json") 
                 );
 
@@ -51,7 +51,7 @@ namespace VideoFilesChecker
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "UIE#G{dQ#<xCXhQ%I.9:G#U<FzpisOxDkhS*e'L7dxes5((]TpmFi!!GvLU(X>0");
 
             var data = await client.GetAsync(
-                "https://mewstech.com/plex/api/get-videos-for-deletion.php"
+                "https://www.mewstech.com/plex/api/get-videos-for-deletion.php"
                 );
 
             data.EnsureSuccessStatusCode();
