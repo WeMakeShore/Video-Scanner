@@ -49,7 +49,7 @@ namespace VideoFilesChecker
         {
             UpdateVideosAndDirectories();
 
-            Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(new Videos(listofMoviesWithoutFilePath.ToArray(), listOfTvShowsWithoutFilePath.ToArray(), listOfDocumentaryMoviesWithoutFilePath.ToArray(), listOfTvShowsWithoutFilePath.ToArray())); }).Wait();
+            Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(new Videos(listofMoviesWithoutFilePath.ToArray(), listOfTvShowsWithoutFilePath.ToArray(), listOfDocumentaryMoviesWithoutFilePath.ToArray(), listOfDocumentaryTvShowsWithoutFilePath.ToArray())); }).Wait();
 
             Task.Run(async () => { await CreateHttpRequest.CreateGETRequest(); }).Wait();
 
@@ -58,6 +58,8 @@ namespace VideoFilesChecker
             VideoDeletion.CheckForVideosToDelete();
 
             VideoDeletion.DeleteVideos();
+
+            Console.ReadKey();
         }
 
         public static void PrintGETData()
@@ -95,12 +97,12 @@ namespace VideoFilesChecker
             }
 
 
-            foreach (string documentaryTv in VideoDeletion.docummentaryTvDeletionRequests)
+            foreach (string documentaryTv in VideoDeletion.documentaryTvDeletionRequests)
             {
                 Console.WriteLine("GET [Documentary TV]: " + documentaryTv);
             }
 
-            if (VideoDeletion.docummentaryTvDeletionRequests.Count > 0)
+            if (VideoDeletion.documentaryTvDeletionRequests.Count > 0)
             {
                 Console.WriteLine();
             }

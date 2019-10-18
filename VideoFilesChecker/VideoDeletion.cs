@@ -17,7 +17,7 @@ namespace VideoFilesChecker
         public static List<string> movieDeletionRequests = new List<string>();
         public static List<string> tvShowDeletionRequests = new List<string>();
         public static List<string> documentaryMovieDeletionRequests = new List<string>();
-        public static List<string> docummentaryTvDeletionRequests = new List<string>();
+        public static List<string> documentaryTvDeletionRequests = new List<string>();
 
         private static List<string> movies = new List<string>();
         private static List<string> tvShows = new List<string>();
@@ -66,7 +66,7 @@ namespace VideoFilesChecker
                 }
             }
 
-            foreach (string directory in docummentaryTvDeletionRequests)
+            foreach (string directory in documentaryTvDeletionRequests)
             {
                 if (Directory.Exists(Program.documentaryTvInExternalDrivePath + "\\" + directory))
                 {
@@ -152,9 +152,9 @@ namespace VideoFilesChecker
 
             for (int i = 0; i < documentaryTv.Count; i++)
             {
-                for (int j = 0; j < docummentaryTvDeletionRequests.Count; j++)
+                for (int j = 0; j < documentaryTvDeletionRequests.Count; j++)
                 {
-                    if (Path.GetFileNameWithoutExtension(documentaryTv[i]) == docummentaryTvDeletionRequests[j])
+                    if (Path.GetFileNameWithoutExtension(documentaryTv[i]) == documentaryTvDeletionRequests[j])
                     {
                         try
                         {
