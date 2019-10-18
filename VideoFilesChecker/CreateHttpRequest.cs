@@ -28,18 +28,6 @@ namespace VideoFilesChecker
 
         public static async Task<string>PostData(Videos dataToPost)
         {
-            foreach (string tvShow in dataToPost.TvShows)
-            {
-                Console.WriteLine("TV Show: " + tvShow);
-            }
-
-            foreach (string documentaryTv in dataToPost.DocumentaryTv)
-            {
-                Console.WriteLine("Documentary TV: " + documentaryTv);
-            }
-
-            Console.ReadKey();
-
             var data = new JavaScriptSerializer().Serialize(dataToPost);
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "UIE#G{dQ#<xCXhQ%I.9:G#U<FzpisOxDkhS*e'L7dxes5((]TpmFi!!GvLU(X>0");
