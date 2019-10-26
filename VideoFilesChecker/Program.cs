@@ -61,7 +61,12 @@ namespace VideoChecking
 
             Generate.GenerateDocuments();
 
-            VideoChecker.CheckForVideoChanges();
+            if (!VideoChecker.CheckForVideoChanges())
+            {
+                Console.WriteLine("No Changes found.");
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
 
             Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(new Videos(listofMoviesWithoutFilePath.ToArray(), listOfTvShowsWithoutFilePath.ToArray(), listOfDocumentaryMoviesWithoutFilePath.ToArray(), listOfDocumentaryTvShowsWithoutFilePath.ToArray())); }).Wait();
 

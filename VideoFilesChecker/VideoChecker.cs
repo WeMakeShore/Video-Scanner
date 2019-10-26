@@ -7,7 +7,7 @@ namespace VideoFileChecker
 {
     public static class VideoChecker
     {
-        public static bool CheckForVideoChanges()
+        public static bool VideoChangesFound()
         {
             // Compare movie files
             bool movieFilesAreEqual = File.ReadAllLines(Generate.documentsLocation + "Movies.txt")
@@ -27,10 +27,10 @@ namespace VideoFileChecker
 
             if (movieFilesAreEqual == true || tvShowFilesAreEqual == true || documentaryMoviesAreEqual == true || documentaryTvShowsAreEqual == true)
             {
-                return true;
+                return false;
             } else
             {
-                return false;
+                return true;
             }
         }
     }
