@@ -61,7 +61,7 @@ namespace VideoChecking
 
             Generate.GenerateDocuments();
 
-            if (!VideoChecker.CheckForVideoChanges())
+            if (!VideoChecker.VideoChangesFound())
             {
                 Console.WriteLine("No Changes found.");
                 Console.ReadKey();
