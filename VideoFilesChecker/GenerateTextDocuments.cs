@@ -1,11 +1,28 @@
 ﻿using System;
 using System.IO;
+using ExceptionHandler;
 
-namespace VideoFilesChecker
+namespace VideoChecking
 {
     public static class Generate
     {
-        private const string documentsLocation = @"C:\X230 File Share\";
+        public const string documentsLocation = @"C:\X230 File Share\";
+        public const string previousDocumentsLocation = @"C:\X230 File Share\before-scan\";
+
+        public static void GetVideosBeforeUpdate()
+        {
+            try
+            {
+                File.Copy(documentsLocation + "Movies.txt", previousDocumentsLocation + "Movies.txt", true);
+                File.Copy(documentsLocation + "TV Shows.txt", previousDocumentsLocation + "TV Shows.txt", true);
+                File.Copy(documentsLocation + "Documentary Movies.txt", previousDocumentsLocation + "Documentary Movies.txt", true);
+                File.Copy(documentsLocation + "Documentary TV.txt", previousDocumentsLocation + "Documentary TV.txt", true);
+            } catch (Exception UnableToGetVideosBeforeUpdateException)
+            {
+                Console.WriteLine("An Error occurred attempting copying previously created files.\n" + UnableToGetVideosBeforeUpdateException);
+                Exceptions.LogException(UnableToGetVideosBeforeUpdateException);
+            }
+        }
 
         public static void GenerateDocuments()
         {
@@ -20,7 +37,7 @@ namespace VideoFilesChecker
 
         private static void GenerateMovieDocument()
         {
-            string movieDocumentLocation = documentsLocation + @"Movies.txt";
+            string movieDocumentLocation = documentsLocation + "Movies.txt";
 
             using (StreamWriter sw = new StreamWriter(movieDocumentLocation))
             {
@@ -46,7 +63,7 @@ namespace VideoFilesChecker
 
         private static void GenerateDocumentaryMovieDocument()
         {
-            string documentaryDocumentLocation = documentsLocation + @"Documentary Movies.txt";
+            string documentaryDocumentLocation = documentsLocation + "Documentary Movies.txt";
 
             using (StreamWriter sw = new StreamWriter(documentaryDocumentLocation))
             {
@@ -59,7 +76,7 @@ namespace VideoFilesChecker
 
         private static void GenerateDocumentaryTvDocument()
         {
-            string documentaryTvLocation = documentsLocation + @"Documentary TV.txt";
+            string documentaryTvLocation = documentsLocation + "Documentary TV.txt";
 
             using (StreamWriter sw = new StreamWriter(documentaryTvLocation))
             {

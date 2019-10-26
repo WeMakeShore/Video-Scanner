@@ -4,8 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.VisualBasic.FileIO;
+using ExceptionHandler;
 
-namespace VideoFilesChecker
+namespace VideoChecking
 {
     static class VideoDeletion
     {
@@ -98,6 +99,7 @@ namespace VideoFilesChecker
                         {
                             Console.WriteLine("Unable to delete the file: " + "'" + movies[i] + "'" + "\n" + UnableToDeleteFileException);
                             Console.WriteLine("Attempting to delete via normal delete function.");
+                            Exceptions.LogException(UnableToDeleteFileException);
                         }
                     }
                 }
@@ -121,6 +123,7 @@ namespace VideoFilesChecker
                         {
                             Console.WriteLine("Unable to delete the directory: " + "'" + tvShows[i] + "'" + "\n" + UnableToDeleteFileException + "\n");
                             Console.WriteLine("The file may have already been deleted.\n");
+                            Exceptions.LogException(UnableToDeleteFileException);
                         }
                     }
                 }
@@ -145,6 +148,7 @@ namespace VideoFilesChecker
                         catch (Exception UnableToDeleteFileException)
                         {
                             Console.WriteLine("Unable to delete the file: " + "'" + documentaryMovies[i] + "'" + "\n" + UnableToDeleteFileException);
+                            Exceptions.LogException(UnableToDeleteFileException);
                         }
                     }
                 }
@@ -168,6 +172,7 @@ namespace VideoFilesChecker
                         {
                             Console.WriteLine("Unable to delete the directory: " + "'" + documentaryTv[i] + "'" + "\n" + UnableToDeleteFileException + "\n");
                             Console.WriteLine("The file may have already been deleted.\n");
+                            Exceptions.LogException(UnableToDeleteFileException);
                         }
                     }
                 }

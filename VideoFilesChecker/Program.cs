@@ -3,9 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using VideoFileChecker;
+using ExceptionHandler;
 using System.Threading.Tasks;
 
-namespace VideoFilesChecker
+namespace VideoChecking
 {
     class Program
     {
@@ -47,7 +49,19 @@ namespace VideoFilesChecker
 
         private static void RunProgram()
         {
+            if (Exceptions.checkForPreviousException())
+            {
+                Console.WriteLine("Warning - Unexpected closure on previous run. Not getting videos before update.\n");
+            } else
+            {
+                Generate.GetVideosBeforeUpdate();
+            }
+
             UpdateVideosAndDirectories();
+
+            Generate.GenerateDocuments();
+
+            VideoChecker.CheckForVideoChanges();
 
             Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(new Videos(listofMoviesWithoutFilePath.ToArray(), listOfTvShowsWithoutFilePath.ToArray(), listOfDocumentaryMoviesWithoutFilePath.ToArray(), listOfDocumentaryTvShowsWithoutFilePath.ToArray())); }).Wait();
 
@@ -59,11 +73,14 @@ namespace VideoFilesChecker
 
             VideoDeletion.DeleteVideos();
 
+            Exceptions.RemovePreviousExceptionLog();
+
             Console.ReadKey();
         }
 
         public static void PrintGETData()
         {
+            // Movies
             foreach (string movie in VideoDeletion.movieDeletionRequests)
             {
                 Console.WriteLine("GET [movie]: " + movie);
@@ -74,7 +91,7 @@ namespace VideoFilesChecker
                 Console.WriteLine();
             }
 
-
+            // TV Shows
             foreach (string tvShow in VideoDeletion.tvShowDeletionRequests)
             {
                 Console.WriteLine("GET [TV Show]: " + tvShow);
@@ -85,7 +102,7 @@ namespace VideoFilesChecker
                 Console.WriteLine();
             }
 
-
+            // Documentary Movies
             foreach (string documentaryMovies in VideoDeletion.documentaryMovieDeletionRequests)
             {
                 Console.WriteLine("GET [Documentary Movies]: " + documentaryMovies);
@@ -96,7 +113,7 @@ namespace VideoFilesChecker
                 Console.WriteLine();
             }
 
-
+            // Documentary TV
             foreach (string documentaryTv in VideoDeletion.documentaryTvDeletionRequests)
             {
                 Console.WriteLine("GET [Documentary TV]: " + documentaryTv);

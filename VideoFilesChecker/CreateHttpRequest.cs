@@ -5,8 +5,9 @@ using System.Web.Script.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ExceptionHandler;
 
-namespace VideoFilesChecker
+namespace VideoChecking
 {
     public static class CreateHttpRequest
     {
@@ -26,50 +27,72 @@ namespace VideoFilesChecker
             Console.WriteLine(getResponse);
         }
 
-        public static async Task<string>PostData(Videos dataToPost)
+        private static async Task<string>PostData(Videos dataToPost)
         {
             var data = new JavaScriptSerializer().Serialize(dataToPost);
 
+            var responseString = String.Empty;
+
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "UIE#G{dQ#<xCXhQ%I.9:G#U<FzpisOxDkhS*e'L7dxes5((]TpmFi!!GvLU(X>0");
 
-            var response = await client.PostAsync(
-                "https://www.mewstech.com/plex/api/update-videos.php",
-                new StringContent(data, Encoding.UTF8, "application/json") 
-                );
+            try
+            {
+                var response = await client.PostAsync(
+                    "https://www.mewstech.com/plex/api/update-videos.php",
+                    //"http://plex.local/api/update-videos.php",
+                    new StringContent(data, Encoding.UTF8, "application/json")
+                    );
 
-            response.EnsureSuccessStatusCode();
+                response.EnsureSuccessStatusCode();
 
-            var responseString = await response.Content.ReadAsStringAsync();
+                responseString = await response.Content.ReadAsStringAsync();
 
-            response.Dispose();
+                response.Dispose();
 
-            return responseString + Environment.NewLine; 
+            } catch (Exception UnableToPostDataException)
+            {
+                Console.WriteLine(responseString);
+                Exceptions.LogException(UnableToPostDataException);
+            }
+
+            return responseString + Environment.NewLine;
+            
         }
 
         private static async Task<string>GetJsonData()
         {
             Console.WriteLine("GET: Starting request.\n");
-            
+
+            var responseBody = String.Empty;
+
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "UIE#G{dQ#<xCXhQ%I.9:G#U<FzpisOxDkhS*e'L7dxes5((]TpmFi!!GvLU(X>0");
 
-            var data = await client.GetAsync(
-                "https://www.mewstech.com/plex/api/get-videos-for-deletion.php"
-                );
+            try
+            {
+                var data = await client.GetAsync(
+                    "https://www.mewstech.com/plex/api/get-videos-for-deletion.php"
+                    //"http://plex.local/plex/api/get-videos-for-deletion.php"
+                    );
 
-            data.EnsureSuccessStatusCode();
+                data.EnsureSuccessStatusCode();
 
-            var responseBody = await data.Content.ReadAsStringAsync();
+                responseBody = await data.Content.ReadAsStringAsync();
 
-            var jsonData = JsonConvert.DeserializeObject<Videos>(responseBody);
+                var jsonData = JsonConvert.DeserializeObject<Videos>(responseBody);
 
-            Console.WriteLine("GET: Request completed.\n");
+                Console.WriteLine("GET: Request completed.\n");
 
-            VideoDeletion.movieDeletionRequests.AddRange(jsonData.Movies);
-            VideoDeletion.tvShowDeletionRequests.AddRange(jsonData.TvShows);
-            VideoDeletion.documentaryMovieDeletionRequests.AddRange(jsonData.DocumentaryMovies);
-            VideoDeletion.documentaryTvDeletionRequests.AddRange(jsonData.DocumentaryTv);
+                VideoDeletion.movieDeletionRequests.AddRange(jsonData.Movies);
+                VideoDeletion.tvShowDeletionRequests.AddRange(jsonData.TvShows);
+                VideoDeletion.documentaryMovieDeletionRequests.AddRange(jsonData.DocumentaryMovies);
+                VideoDeletion.documentaryTvDeletionRequests.AddRange(jsonData.DocumentaryTv);
 
-            data.Dispose();
+                data.Dispose();
+
+            } catch (Exception UnableToGetDataException)
+            {
+                Exceptions.LogException(UnableToGetDataException);
+            }
 
             return responseBody + Environment.NewLine;
         }

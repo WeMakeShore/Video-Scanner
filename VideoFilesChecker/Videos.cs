@@ -1,5 +1,5 @@
 ﻿
-namespace VideoFilesChecker
+namespace VideoChecking
 {
     public class Videos
     {
