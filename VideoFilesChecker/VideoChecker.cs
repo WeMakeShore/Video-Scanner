@@ -13,8 +13,6 @@ namespace VideoFileChecker
             bool movieFilesAreEqual = File.ReadAllLines(Generate.documentsLocation + "Movies.txt")
                 .SequenceEqual(File.ReadAllLines(Generate.previousDocumentsLocation + "Movies.txt"));
 
-            Console.WriteLine(movieFilesAreEqual);
-
             // Compare tv shows
             bool tvShowFilesAreEqual = File.ReadAllLines(Generate.documentsLocation + "TV Shows.txt")
                 .SequenceEqual(File.ReadAllLines(Generate.previousDocumentsLocation + "TV Shows.txt"));
