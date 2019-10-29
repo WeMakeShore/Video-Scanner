@@ -13,6 +13,8 @@ namespace VideoFileChecker
             bool movieFilesAreEqual = File.ReadAllLines(Generate.documentsLocation + "Movies.txt")
                 .SequenceEqual(File.ReadAllLines(Generate.previousDocumentsLocation + "Movies.txt"));
 
+            Console.WriteLine(movieFilesAreEqual);
+
             // Compare tv shows
             bool tvShowFilesAreEqual = File.ReadAllLines(Generate.documentsLocation + "TV Shows.txt")
                 .SequenceEqual(File.ReadAllLines(Generate.previousDocumentsLocation + "TV Shows.txt"));
@@ -25,7 +27,7 @@ namespace VideoFileChecker
             bool documentaryTvShowsAreEqual = File.ReadAllLines(Generate.documentsLocation + "Documentary TV.txt")
                 .SequenceEqual(File.ReadAllLines(Generate.previousDocumentsLocation + "Documentary TV.txt"));
 
-            if (movieFilesAreEqual == true || tvShowFilesAreEqual == true || documentaryMoviesAreEqual == true || documentaryTvShowsAreEqual == true)
+            if (movieFilesAreEqual == true && tvShowFilesAreEqual == true && documentaryMoviesAreEqual == true && documentaryTvShowsAreEqual == true)
             {
                 return false;
             } else
