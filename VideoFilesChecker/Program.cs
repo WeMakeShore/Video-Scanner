@@ -63,8 +63,20 @@ namespace VideoChecking
 
             if (!VideoChecker.VideoChangesFound())
             {
-                Console.WriteLine("No Changes found.");
+                Console.WriteLine("No Changes found.\n");
+
+                Task.Run(async () => { await CreateHttpRequest.CreateGETRequest(); }).Wait();
+
+                PrintGETData();
+
+                VideoDeletion.CheckForVideosToDelete();
+
+                VideoDeletion.DeleteVideos();
+
+                Exceptions.RemovePreviousExceptionLog();
+
                 Console.ReadKey();
+
                 Environment.Exit(0);
             }
 
