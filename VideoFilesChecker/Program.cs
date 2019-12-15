@@ -75,8 +75,6 @@ namespace VideoChecking
 
                 Exceptions.RemovePreviousExceptionLog();
 
-                Console.ReadKey();
-
                 Environment.Exit(0);
             }
 
