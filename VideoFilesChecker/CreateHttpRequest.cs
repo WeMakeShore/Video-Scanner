@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Web.Script.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -13,7 +12,7 @@ namespace VideoChecking
     {
         private static HttpClient client = new HttpClient();
 
-        public static async Task CreatePOSTRequest(Videos postData)
+        public static async Task CreatePOSTRequest(string postData)
         {
             string postResponse = await PostData(postData);
 
@@ -27,10 +26,8 @@ namespace VideoChecking
             Console.WriteLine(getResponse);
         }
 
-        private static async Task<string>PostData(Videos dataToPost)
+        private static async Task<string>PostData(string dataToPost)
         {
-            var data = new JavaScriptSerializer().Serialize(dataToPost);
-
             var responseString = String.Empty;
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "UIE#G{dQ#<xCXhQ%I.9:G#U<FzpisOxDkhS*e'L7dxes5((]TpmFi!!GvLU(X>0");
@@ -40,7 +37,7 @@ namespace VideoChecking
                 var response = await client.PostAsync(
                     "https://www.mewstech.com/plex/api/update-videos.php",
                     //"http://plex.local/api/update-videos.php",
-                    new StringContent(data, Encoding.UTF8, "application/json")
+                    new StringContent(dataToPost, Encoding.UTF8, "application/json")
                     );
 
                 response.EnsureSuccessStatusCode();
@@ -71,21 +68,14 @@ namespace VideoChecking
             {
                 var data = await client.GetAsync(
                     "https://www.mewstech.com/plex/api/get-videos-for-deletion.php"
-                    //"http://plex.local/plex/api/get-videos-for-deletion.php"
+                    //"http://plex.local/api/get-videos-for-deletion.php"
                     );
 
                 data.EnsureSuccessStatusCode();
 
                 responseBody = await data.Content.ReadAsStringAsync();
 
-                var jsonData = JsonConvert.DeserializeObject<Videos>(responseBody);
-
-                Console.WriteLine("GET: Request completed.\n");
-
-                VideoDeletion.movieDeletionRequests.AddRange(jsonData.Movies);
-                VideoDeletion.tvShowDeletionRequests.AddRange(jsonData.TvShows);
-                VideoDeletion.documentaryMovieDeletionRequests.AddRange(jsonData.DocumentaryMovies);
-                VideoDeletion.documentaryTvDeletionRequests.AddRange(jsonData.DocumentaryTv);
+                VideoDeletion.listOfDeletionRequests = JsonConvert.DeserializeObject<Videos>(responseBody);
 
                 data.Dispose();
 

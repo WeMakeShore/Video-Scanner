@@ -3,12 +3,12 @@ namespace VideoChecking
 {
     public class Videos
     {
-        public string[] Movies { get; set; }
-        public string[] TvShows { get; set; }
-        public string[] DocumentaryMovies { get; set; }
-        public string[] DocumentaryTv { get; set; }
+        public Video[] Movies;
+        public Video[] TvShows;
+        public Video[] DocumentaryMovies;
+        public Video[] DocumentaryTv;
 
-        public Videos(string[] movies, string[] tvShows, string[] documentaryMovies, string[] documentaryTv)
+        public Videos(Video[] movies, Video[] tvShows, Video[] documentaryMovies, Video[] documentaryTv)
         {
             this.Movies = movies;
             this.TvShows = tvShows;

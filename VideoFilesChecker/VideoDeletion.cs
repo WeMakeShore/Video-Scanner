@@ -15,10 +15,7 @@ namespace VideoChecking
         //private const string documentaryMovieDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\Documentary Movies to Delete.txt";
         //private const string documentaryTvDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\Documentary TV to Delete.txt";
 
-        public static List<string> movieDeletionRequests = new List<string>();
-        public static List<string> tvShowDeletionRequests = new List<string>();
-        public static List<string> documentaryMovieDeletionRequests = new List<string>();
-        public static List<string> documentaryTvDeletionRequests = new List<string>();
+        public static Videos listOfDeletionRequests;
 
         private static List<string> movies = new List<string>();
         private static List<string> tvShows = new List<string>();
@@ -36,42 +33,42 @@ namespace VideoChecking
         private static void GetExtensionAndPathOfVideos()
         {
             //get video files
-            for (int i = 0; i <= movieDeletionRequests.Count - 1; i++)
+            for (int i = 0; i <= listOfDeletionRequests.Movies.Length - 1; i++)
             {
-                string[] moviesIndock = Directory.GetFiles(Program.moviesInDockPath + @"\", movieDeletionRequests[i] + "*.*");
+                string[] moviesIndock = Directory.GetFiles(Program.moviesInDockPath + @"\", listOfDeletionRequests.Movies[i].Title + "*.*");
                 movies.AddRange(moviesIndock);
 
-                string[] moviesInExternal = Directory.GetFiles(Program.moviesInExternalDrivePath + @"\", movieDeletionRequests[i] + "*.*");
+                string[] moviesInExternal = Directory.GetFiles(Program.moviesInExternalDrivePath + @"\", listOfDeletionRequests.Movies[i].Title + "*.*");
                 movies.AddRange(moviesInExternal);
             }
 
             movies = movies.Distinct().ToList();
 
-            for (int i = 0; i <= documentaryMovieDeletionRequests.Count - 1; i++)
+            for (int i = 0; i <= listOfDeletionRequests.DocumentaryMovies.Length - 1; i++)
             {
-                string[] docMoviesInExternal = Directory.GetFiles(Program.documentaryMoviesInExternalDrivePath + @"\", documentaryMovieDeletionRequests[i] + "*.*");
+                string[] docMoviesInExternal = Directory.GetFiles(Program.documentaryMoviesInExternalDrivePath + @"\", listOfDeletionRequests.DocumentaryMovies[i].Title + "*.*");
 
                 documentaryMovies.AddRange(docMoviesInExternal);
             }
 
             //get directory folders
-            foreach (string directory in tvShowDeletionRequests)
+            foreach (Video directory in listOfDeletionRequests.TvShows)
             {
-                if (Directory.Exists(Program.tvShowsInDockPath + "\\" + directory))
+                if (Directory.Exists(Program.tvShowsInDockPath + "\\" + directory.Title))
                 {
-                    tvShows.Add(Program.tvShowsInDockPath + "\\" + directory);
+                    tvShows.Add(Program.tvShowsInDockPath + "\\" + directory.Title);
                 }
-                else if (Directory.Exists(Program.tvShowsInExternalDrivePath + "\\" + directory))
+                else if (Directory.Exists(Program.tvShowsInExternalDrivePath + "\\" + directory.Title))
                 {
-                    tvShows.Add(Program.tvShowsInExternalDrivePath + "\\" + directory);
+                    tvShows.Add(Program.tvShowsInExternalDrivePath + "\\" + directory.Title);
                 }
             }
 
-            foreach (string directory in documentaryTvDeletionRequests)
+            foreach (Video directory in listOfDeletionRequests.DocumentaryTv)
             {
-                if (Directory.Exists(Program.documentaryTvInExternalDrivePath + "\\" + directory))
+                if (Directory.Exists(Program.documentaryTvInExternalDrivePath + "\\" + directory.Title))
                 {
-                    documentaryTv.Add(Program.documentaryTvInExternalDrivePath + "\\" + directory);
+                    documentaryTv.Add(Program.documentaryTvInExternalDrivePath + "\\" + directory.Title);
                 }
             }
         }
@@ -80,16 +77,16 @@ namespace VideoChecking
         {
             for (int i = 0; i < movies.Count; i++)
             {
-                for (int j = 0; j < movieDeletionRequests.Count; j++)
+                for (int j = 0; j < listOfDeletionRequests.Movies.Length; j++)
                 {
                     // Removies year of movie, e.g (2019).
                     string tempStringWithRegex = Regex.Replace(Path.GetFileNameWithoutExtension(movies[i]), @" \(.*?\)", string.Empty);
 
-                    if (tempStringWithRegex == movieDeletionRequests[j])
+                    if (tempStringWithRegex == listOfDeletionRequests.Movies[j].Title)
                     {
                         try
                         {
-                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(movies[i], UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                            FileSystem.DeleteFile(movies[i], UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.WriteLine("The File: " + "'" + Path.GetFileName(movies[i]) + "'" + " has been successfully deleted.\n");
                             Console.ResetColor();
@@ -107,13 +104,13 @@ namespace VideoChecking
 
             for (int i = 0; i < tvShows.Count; i++)
             {
-                for (int j = 0; j < tvShowDeletionRequests.Count; j++)
+                for (int j = 0; j < listOfDeletionRequests.TvShows.Length; j++)
                 {
-                    if (Path.GetFileNameWithoutExtension(tvShows[i]) == tvShowDeletionRequests[j])
+                    if (Path.GetFileNameWithoutExtension(tvShows[i]) == listOfDeletionRequests.TvShows[j].Title)
                     {
                         try
                         {
-                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(tvShows[i], UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                            FileSystem.DeleteDirectory(tvShows[i], UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.WriteLine("The File: " + "'" + Path.GetFileName(tvShows[i]) + "'" + " has been successfully deleted.\n");
                             Console.ResetColor();
@@ -131,15 +128,15 @@ namespace VideoChecking
 
             for (int i = 0; i < documentaryMovies.Count; i++)
             {
-                for (int j = 0; j < documentaryMovieDeletionRequests.Count; j++)
+                for (int j = 0; j < listOfDeletionRequests.DocumentaryMovies.Length; j++)
                 {
                     string tempStringWithRegex = Regex.Replace(Path.GetFileNameWithoutExtension(documentaryMovies[i]), @" \(.*?\)", string.Empty);
 
-                    if (tempStringWithRegex == documentaryMovieDeletionRequests[j])
+                    if (tempStringWithRegex == listOfDeletionRequests.DocumentaryMovies[j].Title)
                     {
                         try
                         {
-                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(documentaryMovies[i], UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                            FileSystem.DeleteFile(documentaryMovies[i], UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.WriteLine("The File: " + "'" + Path.GetFileName(documentaryMovies[i]) + "'" + " has been successfully deleted.\n");
                             Console.ResetColor();
@@ -156,13 +153,13 @@ namespace VideoChecking
 
             for (int i = 0; i < documentaryTv.Count; i++)
             {
-                for (int j = 0; j < documentaryTvDeletionRequests.Count; j++)
+                for (int j = 0; j < listOfDeletionRequests.DocumentaryTv.Length; j++)
                 {
-                    if (Path.GetFileNameWithoutExtension(documentaryTv[i]) == documentaryTvDeletionRequests[j])
+                    if (Path.GetFileNameWithoutExtension(documentaryTv[i]) == listOfDeletionRequests.DocumentaryTv[j].Title)
                     {
                         try
                         {
-                            Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(documentaryTv[i], UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                            FileSystem.DeleteDirectory(documentaryTv[i], UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.WriteLine("The File: " + "'" + Path.GetFileName(documentaryTv[i]) + "'" + " has been successfully deleted.\n");
                             Console.ResetColor();
