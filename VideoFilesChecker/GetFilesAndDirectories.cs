@@ -23,6 +23,8 @@ namespace GetVideoData
 
             GetDocumentaryTv();
 
+            OrderEntries();
+
             GenerateJsonVideoFile();
         }
 
@@ -134,26 +136,34 @@ namespace GetVideoData
             };
         }
 
-        public static void GetMovies()
+        private static void GetMovies()
         {
             ScanDirectoryForFiles(Program.moviesInDockPath);
             ScanDirectoryForFiles(Program.moviesInExternalDrivePath);
         }
 
-        public static void GetTvShows()
+        private static void GetTvShows()
         {
             ScanDirectory(Program.tvShowsInDockPath);
             ScanDirectory(Program.tvShowsInExternalDrivePath);
         }
 
-        public static void GetDocumentaryMovies()
+        private static void GetDocumentaryMovies()
         {
             ScanDirectoryForFiles(Program.documentaryMoviesInExternalDrivePath);
         }
 
-        public static void GetDocumentaryTv()
+        private static void GetDocumentaryTv()
         {
             ScanDirectory(Program.documentaryTvInExternalDrivePath);
+        }
+
+        private static void OrderEntries()
+        {
+            Program.listOfMovies = Program.listOfMovies.OrderBy(li => li.Title).ToList();
+            Program.listOfTvShows = Program.listOfTvShows.OrderBy(li => li.Title).ToList();
+            Program.listOfDocumentaryMovies = Program.listOfDocumentaryMovies.OrderBy(li => li.Title).ToList();
+            Program.listOfDocumentaryTv = Program.listOfDocumentaryTv.OrderBy(li => li.Title).ToList();
         }
 
         private static void GenerateJsonVideoFile()
