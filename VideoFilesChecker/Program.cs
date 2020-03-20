@@ -70,6 +70,11 @@ namespace VideoChecking
 
             //    Exceptions.RemovePreviousExceptionLog();
 
+            //    if (VideoDeletion.videosDeleted)
+            //    {
+            //        Console.ReadKey();
+            //    }
+
             //    Environment.Exit(0);
             //}
 
