@@ -75,6 +75,8 @@ namespace VideoChecking
 
                 responseBody = await data.Content.ReadAsStringAsync();
 
+                Console.WriteLine(responseBody);
+
                 VideoDeletion.listOfDeletionRequests = JsonConvert.DeserializeObject<Videos>(responseBody);
 
                 data.Dispose();

@@ -2,7 +2,7 @@
 
 namespace VideoFilesChecker
 {
-    interface IVideo
+    interface IVideo : IDrives
     {
         string Title { get; set; }
         string Year { get; set; }

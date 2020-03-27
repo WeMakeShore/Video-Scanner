@@ -49,8 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateHttpRequest.cs" />
+    <Compile Include="Drive.cs" />
+    <Compile Include="Drives.cs" />
     <Compile Include="ExceptionHandler.cs" />
     <Compile Include="GetFilesAndDirectories.cs" />
+    <Compile Include="IDrives.cs" />
     <Compile Include="IVideo.cs" />
     <Compile Include="Video.cs" />
     <Compile Include="VideoChecker.cs" />

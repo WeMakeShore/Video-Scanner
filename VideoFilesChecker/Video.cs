@@ -1,8 +1,6 @@
 ﻿using System;
-using VideoFilesChecker;
 
-
-public class Video : IVideo
+public class Video
 {
     public string Title { get; set; }
     public string Year { get; set; }

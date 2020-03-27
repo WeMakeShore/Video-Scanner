@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using VideoChecking;
 using Newtonsoft.Json;
+using VideoFilesChecker;
 
 /* Get files and directories and stores the results to videos.json */
 
@@ -168,8 +169,12 @@ namespace GetVideoData
 
         private static void GenerateJsonVideoFile()
         {
+            Drives drives = Drives.GetAvailableDriveSpace();;
+
             string videoData = JsonConvert.SerializeObject(new
             {
+                DockHardDrive = drives.DockHardDrive,
+                ExternalHardDrive = drives.ExternalHardDrive,
                 Movies = Program.listOfMovies,
                 TvShows = Program.listOfTvShows,
                 DocumentaryMovies = Program.listOfDocumentaryMovies,
