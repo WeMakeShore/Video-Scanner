@@ -82,7 +82,7 @@ namespace VideoChecking
 
             Task.Run(async () => { await CreateHttpRequest.CreateGETRequest(); }).Wait();
 
-            PrintGETData();
+            Logger.PrintGETData();
 
             VideoDeletion.CheckForVideosToDelete();
 
@@ -92,52 +92,5 @@ namespace VideoChecking
 
             Console.ReadKey();
         }
-
-        public static void PrintGETData() // TODO: Move into a logger.
-        {
-            // Movies
-            foreach (Video movie in VideoDeletion.listOfDeletionRequests.Movies)
-            {
-                Console.WriteLine("GET [movie]: " + movie.Title);
-            }
-
-            if (VideoDeletion.listOfDeletionRequests.Movies.Length > 0)
-            {
-                Console.WriteLine();
-            }
-
-            // TV Shows
-            foreach (Video tvShow in VideoDeletion.listOfDeletionRequests.TvShows)
-            {
-                Console.WriteLine("GET [TV Show]: " + tvShow);
-            }
-
-            if (VideoDeletion.listOfDeletionRequests.TvShows.Length > 0)
-            {
-                Console.WriteLine();
-            }
-
-            // Documentary Movies
-            foreach (Video documentaryMovies in VideoDeletion.listOfDeletionRequests.DocumentaryMovies)
-            {
-                Console.WriteLine("GET [Documentary Movies]: " + documentaryMovies);
-            }
-
-            if (VideoDeletion.listOfDeletionRequests.DocumentaryMovies.Length > 0)
-            {
-                Console.WriteLine();
-            }
-
-            // Documentary TV
-            foreach (Video documentaryTv in VideoDeletion.listOfDeletionRequests.DocumentaryTv)
-            {
-                Console.WriteLine("GET [Documentary TV]: " + documentaryTv);
-            }
-
-            if (VideoDeletion.listOfDeletionRequests.DocumentaryTv.Length > 0)
-            {
-                Console.WriteLine();
-            }
-        } 
     }
 }
