@@ -8,19 +8,28 @@ public class Plex
     {
         WebRequest request = WebRequest.Create(Program.settings.PlexLibrariesRefreshString);
 
-        // Get the response.  
-        WebResponse response = request.GetResponse();
+        request.Timeout = 3000;
 
-        // Display the status.  
-        Console.Write("Plex Refresh All Libraries Status: ");
-        Console.ForegroundColor = (((HttpWebResponse)response).StatusDescription == "OK") ? ConsoleColor.Green : ConsoleColor.Red;
-        Console.Write(((HttpWebResponse)response).StatusDescription);
+        try
+        {
+            // Get the response.  
+            WebResponse response = request.GetResponse();
 
-        Console.WriteLine(Environment.NewLine + Environment.NewLine);
+            // Display the status.  
+            Console.Write("Plex Refresh All Libraries Status: ");
+            Console.ForegroundColor = (((HttpWebResponse)response).StatusDescription == "OK") ? ConsoleColor.Green : ConsoleColor.Red;
+            Console.Write(((HttpWebResponse)response).StatusDescription);
+
+            // Close the response.  
+            response.Close();
+
+        } catch (WebException UnableToRefreshPlexLibrariesException)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Unable to connect to Plex API. " + "\n" + UnableToRefreshPlexLibrariesException);
+        }
 
         Console.ResetColor();
-
-        // Close the response.  
-        response.Close();
+        Console.WriteLine(Environment.NewLine + Environment.NewLine);
     }
 }
