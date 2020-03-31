@@ -1,11 +1,12 @@
 ﻿using System;
 using System.IO;
+using VideoChecking;
 
 namespace ExceptionHandler
 {
     public class Exceptions
     {
-        private const string exceptionFile = @"C:\X230 File Share\#Exception.txt";
+        private static string exceptionFile = Program.settings.ExceptionLoggerPath;
 
         public static bool checkForPreviousException()
         {

@@ -55,12 +55,8 @@
     <Compile Include="GetFilesAndDirectories.cs" />
     <Compile Include="IDrives.cs" />
     <Compile Include="IVideo.cs" />
-    <Compile Include="Plex.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
+    <Compile Include="Logger.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Video.cs" />
     <Compile Include="VideoChecker.cs" />
     <Compile Include="VideoDeletion.cs" />
@@ -71,10 +67,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

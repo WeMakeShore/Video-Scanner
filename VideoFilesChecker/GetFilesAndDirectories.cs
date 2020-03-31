@@ -82,7 +82,7 @@ namespace GetVideoData
             }
         }
 
-        private static void ScanDirectory(string directoryPath)
+        private static void ScanDirectory(string directoryPath) // TODO: Add driveLocation and category to Video object?
         {
             dynamic itemData = GetItemLocationAndType(directoryPath);
             string driveLocation = itemData.driveLocation;
@@ -115,19 +115,18 @@ namespace GetVideoData
 
             switch (directoryPath)
             {
-                case @"E:\Media\Movies": driveLocation = "Movies (Dock)"; category = "Movie"; break;
-                case @"D:\Plex (External Hard Drive)\Movies": category = "Movie"; driveLocation = "Movies (External Hard Drive)"; break;
-                case @"E:\Media\TV Shows": driveLocation = "TV Shows (Dock)"; category = "TV Show"; break;
-                case @"D:\Plex (External Hard Drive)\TV Shows": driveLocation = "TV Shows (External Hard Drive)"; category = "TV Show"; break;
-                case @"D:\Plex (External Hard Drive)\Documentary Movies": driveLocation = "Documentary Movies (External Hard Drive)"; category = "Documentary Movie"; break;
-                case @"D:\Plex (External Hard Drive)\Documentary TV": driveLocation = "Documentary TV (External Hard Drive)"; category = "Documentary TV"; break;
-
-                case @"C:\Video-Test\Movies Dock": driveLocation = "Movies (Dock)"; category = "Movie"; break;
-                case @"C:\Video-Test\Movies": driveLocation = "Movies (External Hard Drive)"; category = "Movie"; break;
-                case @"C:\Video-Test\TV Shows Dock": driveLocation = "TV Shows (Dock)"; category = "TV Show";  break;
-                case @"C:\Video-Test\TV Shows": driveLocation = "TV Shows (External Hard Drive)"; category = "TV Show"; break;
-                case @"C:\Video-Test\Documentary Movies": driveLocation = "Documentary Movies (External Hard Drive)"; category = "Documentary Movie"; break;
-                case @"C:\Video-Test\Documentary TV": driveLocation = "Documentary TV (External Hard Drive)"; category = "Documentary TV"; break;
+                case var moviesDockPath when directoryPath == Program.settings.MoviesDockPath:
+                    driveLocation = "Movies (Dock)"; category = "Movie"; break;
+                case var moviesExtDrivePath when directoryPath == Program.settings.MoviesExtDrivePath:
+                    driveLocation = "Movies (External Hard Drive)"; category = "Movie"; break;
+                case var tvShowsDockPath when directoryPath == Program.settings.TvShowsDockPath:
+                    driveLocation = "TV Shows (Dock)"; category = "TV Show"; break;
+                case var tvShowsExtPath when directoryPath == Program.settings.TvShowsExtDrivePath:
+                    driveLocation = "TV Shows (External Hard Drive)"; category = "TV Show"; break;
+                case var documentaryMoviesExtPath when directoryPath == Program.settings.DocMoviesExtDrivePath:
+                    driveLocation = "Documentary Movies (External Hard Drive)"; category = "Documentary Movie"; break;
+                case var documentaryTvExtPath when directoryPath == Program.settings.DocTvExtDrivePath:
+                    driveLocation = "Documentary TV (External Hard Drive)"; category = "Documentary TV"; break;
             }
 
             return new
@@ -139,24 +138,26 @@ namespace GetVideoData
 
         private static void GetMovies()
         {
-            ScanDirectoryForFiles(Program.moviesInDockPath);
-            ScanDirectoryForFiles(Program.moviesInExternalDrivePath);
+            Console.WriteLine(Program.moviesDockPath);
+
+            ScanDirectoryForFiles(Program.moviesDockPath);
+            ScanDirectoryForFiles(Program.moviesExtDrivePath);
         }
 
         private static void GetTvShows()
         {
-            ScanDirectory(Program.tvShowsInDockPath);
-            ScanDirectory(Program.tvShowsInExternalDrivePath);
+            ScanDirectory(Program.tvShowsDockPath);
+            ScanDirectory(Program.tvShowsExtDrivePath);
         }
 
         private static void GetDocumentaryMovies()
         {
-            ScanDirectoryForFiles(Program.documentaryMoviesInExternalDrivePath);
+            ScanDirectoryForFiles(Program.docMoviesExtDrivePath);
         }
 
         private static void GetDocumentaryTv()
         {
-            ScanDirectory(Program.documentaryTvInExternalDrivePath);
+            ScanDirectory(Program.docTvShowsExtDrivePath);
         }
 
         private static void OrderEntries()
@@ -181,27 +182,26 @@ namespace GetVideoData
                 DocumentaryTv = Program.listOfDocumentaryTv
             }, Formatting.Indented);
 
-            if (Directory.Exists(@"C:\X230 File Share\"))
+            if (Directory.Exists(Path.GetDirectoryName(Program.settings.VideosJsonPath)))
             {
-                File.WriteAllText(@"C:\X230 File Share\videos.json", videoData);
-            }
-            else if (Directory.Exists(@"C:\Video-Test"))
+                File.WriteAllText(Program.settings.VideosJsonPath, videoData);
+            } else
             {
-                File.WriteAllText(@"C:\Video-Test\videos.json", videoData);
-            }          
+                throw new FileNotFoundException();
+            }         
         }
 
         public static string GetSerializedJsonVideoFileData()
         {
             string serializedData;
 
-            if (File.Exists(@"C:\X230 File Share\videos.json"))
+            if (File.Exists(Program.settings.VideosJsonPath))
             {
-                serializedData = File.ReadAllText(@"C:\X230 File Share\videos.json");
+                serializedData = File.ReadAllText(Program.settings.VideosJsonPath);
             }
             else
             {
-                serializedData = File.ReadAllText(@"C:\Video-Test\videos.json");
+                throw new FileNotFoundException();
             }
 
             return serializedData;
@@ -211,12 +211,12 @@ namespace GetVideoData
         {
             string serializedData = String.Empty;
 
-            if (File.Exists(@"C:\X230 File Share\videos.json"))
+            if (File.Exists(Program.settings.VideosJsonPath))
             {
-                serializedData = File.ReadAllText(@"C:\X230 File Share\videos.json");
+                serializedData = File.ReadAllText(Program.settings.VideosJsonPath);
             } else
             {
-                serializedData = File.ReadAllText(@"C:\Video-Test\videos.json");
+                throw new FileNotFoundException();
             }
 
             var deserializedData = JsonConvert.DeserializeObject<Videos>(serializedData);

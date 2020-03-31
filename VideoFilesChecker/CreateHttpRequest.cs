@@ -10,6 +10,10 @@ namespace VideoChecking
 {
     public static class CreateHttpRequest
     {
+        public static string postUrl = Program.settings.PostUrl;
+        public static string getUrl = Program.settings.GetUrl;
+        public static string bearerToken = Program.settings.BearerToken;
+
         private static HttpClient client = new HttpClient();
 
         public static async Task CreatePOSTRequest(string postData)
@@ -30,15 +34,11 @@ namespace VideoChecking
         {
             var responseString = String.Empty;
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "UIE#G{dQ#<xCXhQ%I.9:G#U<FzpisOxDkhS*e'L7dxes5((]TpmFi!!GvLU(X>0");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
 
             try
             {
-                var response = await client.PostAsync(
-                    "https://www.mewstech.com/plex/api/update-videos.php",
-                    //"http://plex.local/api/update-videos.php",
-                    new StringContent(dataToPost, Encoding.UTF8, "application/json")
-                    );
+                var response = await client.PostAsync(postUrl, new StringContent(dataToPost, Encoding.UTF8, "application/json"));
 
                 response.EnsureSuccessStatusCode();
 
@@ -62,20 +62,15 @@ namespace VideoChecking
 
             var responseBody = String.Empty;
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "UIE#G{dQ#<xCXhQ%I.9:G#U<FzpisOxDkhS*e'L7dxes5((]TpmFi!!GvLU(X>0");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
 
             try
             {
-                var data = await client.GetAsync(
-                    "https://www.mewstech.com/plex/api/get-videos-for-deletion.php"
-                    //"http://plex.local/api/get-videos-for-deletion.php"
-                    );
+                var data = await client.GetAsync(getUrl);
 
                 data.EnsureSuccessStatusCode();
 
                 responseBody = await data.Content.ReadAsStringAsync();
-
-                Console.WriteLine(responseBody);
 
                 VideoDeletion.listOfDeletionRequests = JsonConvert.DeserializeObject<Videos>(responseBody);
 

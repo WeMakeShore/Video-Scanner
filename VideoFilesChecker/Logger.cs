@@ -20,7 +20,7 @@ public class Logger
 
         foreach (Video movie in VideoDeletion.listOfDeletionRequests.Movies)
         {
-            Console.WriteLine("GET [movie]: " + movie.Title);
+            Console.WriteLine("GET [movie]: " + movie.Title + lineBreak);
         }
     }
 

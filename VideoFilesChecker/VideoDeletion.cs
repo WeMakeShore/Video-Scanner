@@ -10,11 +10,6 @@ namespace VideoChecking
 {
     static class VideoDeletion
     {
-        //private const string movieDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\Movies to Delete.txt";
-        //private const string tvDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\TV Shows to Delete.txt";
-        //private const string documentaryMovieDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\Documentary Movies to Delete.txt";
-        //private const string documentaryTvDeletionRequestsPath = @"C:\X230 File Share\Video Deletion Requests\Documentary TV to Delete.txt";
-
         public static Videos listOfDeletionRequests;
 
         private static List<string> movies = new List<string>();
@@ -35,10 +30,10 @@ namespace VideoChecking
             //get video files
             for (int i = 0; i <= listOfDeletionRequests.Movies.Length - 1; i++)
             {
-                string[] moviesIndock = Directory.GetFiles(Program.moviesInDockPath + @"\", listOfDeletionRequests.Movies[i].Title + "*.*");
+                string[] moviesIndock = Directory.GetFiles(Program.moviesDockPath + @"\", listOfDeletionRequests.Movies[i].Title + "*.*");
                 movies.AddRange(moviesIndock);
 
-                string[] moviesInExternal = Directory.GetFiles(Program.moviesInExternalDrivePath + @"\", listOfDeletionRequests.Movies[i].Title + "*.*");
+                string[] moviesInExternal = Directory.GetFiles(Program.moviesExtDrivePath + @"\", listOfDeletionRequests.Movies[i].Title + "*.*");
                 movies.AddRange(moviesInExternal);
             }
 
@@ -46,7 +41,7 @@ namespace VideoChecking
 
             for (int i = 0; i <= listOfDeletionRequests.DocumentaryMovies.Length - 1; i++)
             {
-                string[] docMoviesInExternal = Directory.GetFiles(Program.documentaryMoviesInExternalDrivePath + @"\", listOfDeletionRequests.DocumentaryMovies[i].Title + "*.*");
+                string[] docMoviesInExternal = Directory.GetFiles(Program.docMoviesExtDrivePath + @"\", listOfDeletionRequests.DocumentaryMovies[i].Title + "*.*");
 
                 documentaryMovies.AddRange(docMoviesInExternal);
             }
@@ -54,21 +49,21 @@ namespace VideoChecking
             //get directory folders
             foreach (Video directory in listOfDeletionRequests.TvShows)
             {
-                if (Directory.Exists(Program.tvShowsInDockPath + "\\" + directory.Title))
+                if (Directory.Exists(Program.tvShowsDockPath + "\\" + directory.Title))
                 {
-                    tvShows.Add(Program.tvShowsInDockPath + "\\" + directory.Title);
+                    tvShows.Add(Program.tvShowsDockPath + "\\" + directory.Title);
                 }
-                else if (Directory.Exists(Program.tvShowsInExternalDrivePath + "\\" + directory.Title))
+                else if (Directory.Exists(Program.tvShowsExtDrivePath + "\\" + directory.Title))
                 {
-                    tvShows.Add(Program.tvShowsInExternalDrivePath + "\\" + directory.Title);
+                    tvShows.Add(Program.tvShowsExtDrivePath + "\\" + directory.Title);
                 }
             }
 
             foreach (Video directory in listOfDeletionRequests.DocumentaryTv)
             {
-                if (Directory.Exists(Program.documentaryTvInExternalDrivePath + "\\" + directory.Title))
+                if (Directory.Exists(Program.docTvShowsExtDrivePath + "\\" + directory.Title))
                 {
-                    documentaryTv.Add(Program.documentaryTvInExternalDrivePath + "\\" + directory.Title);
+                    documentaryTv.Add(Program.docTvShowsExtDrivePath + "\\" + directory.Title);
                 }
             }
         }
