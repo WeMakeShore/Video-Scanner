@@ -56,6 +56,7 @@
     <Compile Include="IDrives.cs" />
     <Compile Include="IVideo.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Plex.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Video.cs" />
     <Compile Include="VideoChecker.cs" />

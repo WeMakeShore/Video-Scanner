@@ -8,9 +8,6 @@ using Newtonsoft.Json;
 
 public class Settings
 {
-    //TODO: GetItemLocationAndType() contains hard-coded values.
-    //TODO: Update CreateHttpRequest page.
-
     public string MoviesDockPath { get; set; }
     public string MoviesExtDrivePath { get; set; }
     public string TvShowsDockPath { get; set; }

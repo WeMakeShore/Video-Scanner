@@ -24,7 +24,7 @@ namespace VideoChecking
         }
 
         public static async Task CreateGETRequest()
-        {
+        {            
             string getResponse = await GetJsonData();
 
             Console.WriteLine(getResponse);
@@ -52,8 +52,7 @@ namespace VideoChecking
                 Exceptions.LogException(UnableToPostDataException);
             }
 
-            return responseString + Environment.NewLine;
-            
+            return responseString;          
         }
 
         private static async Task<string>GetJsonData()

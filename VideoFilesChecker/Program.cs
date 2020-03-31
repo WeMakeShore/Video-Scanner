@@ -73,6 +73,8 @@ namespace VideoChecking
             //    Environment.Exit(0);
             //}
 
+            Plex.RefreshPlexLibraries();
+
             Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(GetFilesAndDirectories.GetSerializedJsonVideoFileData());}).Wait();
 
             Task.Run(async () => { await CreateHttpRequest.CreateGETRequest(); }).Wait();

@@ -69,8 +69,10 @@ namespace GetVideoData
 
                     if (String.IsNullOrEmpty(title))
                     {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine($"Warning - Title is null or empty. ({directoryPath}\\{f.Name})\n");
                         title = Path.GetFileNameWithoutExtension(f.Name);
+                        Console.ResetColor();
                     }
 
                     switch (category)
@@ -138,8 +140,6 @@ namespace GetVideoData
 
         private static void GetMovies()
         {
-            Console.WriteLine(Program.moviesDockPath);
-
             ScanDirectoryForFiles(Program.moviesDockPath);
             ScanDirectoryForFiles(Program.moviesExtDrivePath);
         }
