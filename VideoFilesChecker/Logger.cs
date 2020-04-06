@@ -30,7 +30,7 @@ public class Logger
 
         foreach (Video tvShow in VideoDeletion.listOfDeletionRequests.TvShows)
         {
-            Console.WriteLine("GET [TV Show]: " + tvShow + lineBreak);
+            Console.WriteLine("GET [TV Show]: " + tvShow.Title + lineBreak);
         }
     }
 
@@ -40,7 +40,7 @@ public class Logger
 
         foreach (Video documentaryMovies in VideoDeletion.listOfDeletionRequests.DocumentaryMovies)
         {
-            Console.WriteLine("GET [Documentary Movies]: " + documentaryMovies + lineBreak);
+            Console.WriteLine("GET [Documentary Movies]: " + documentaryMovies.Title + lineBreak);
         }
     }
 
@@ -50,7 +50,7 @@ public class Logger
 
         foreach (Video documentaryTv in VideoDeletion.listOfDeletionRequests.DocumentaryTv)
         {
-            Console.WriteLine("GET [Documentary TV]: " + documentaryTv + lineBreak);
+            Console.WriteLine("GET [Documentary TV]: " + documentaryTv.Title + lineBreak);
         }
 
         if (VideoDeletion.listOfDeletionRequests.DocumentaryTv.Length > 0)

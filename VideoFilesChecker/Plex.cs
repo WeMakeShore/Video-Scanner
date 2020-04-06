@@ -8,7 +8,7 @@ public class Plex
     {
         WebRequest request = WebRequest.Create(Program.settings.PlexLibrariesRefreshString);
 
-        request.Timeout = 3000;
+        request.Timeout = 7000;
 
         try
         {
@@ -16,7 +16,7 @@ public class Plex
             WebResponse response = request.GetResponse();
 
             // Display the status.  
-            Console.Write("Plex Refresh All Libraries Status: ");
+            Console.Write("\nPlex Refresh All Libraries Status: ");
             Console.ForegroundColor = (((HttpWebResponse)response).StatusDescription == "OK") ? ConsoleColor.Green : ConsoleColor.Red;
             Console.Write(((HttpWebResponse)response).StatusDescription);
 
@@ -30,6 +30,6 @@ public class Plex
         }
 
         Console.ResetColor();
-        Console.WriteLine(Environment.NewLine + Environment.NewLine);
+        Console.WriteLine(Environment.NewLine);
     }
 }
