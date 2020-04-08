@@ -74,7 +74,7 @@ namespace VideoChecking
             {
                 for (int j = 0; j < listOfDeletionRequests.Movies.Length; j++)
                 {
-                    // Removies year of movie, e.g (2019).
+                    // Removes year of movie, e.g (2019).
                     string tempStringWithRegex = Regex.Replace(Path.GetFileNameWithoutExtension(movies[i]), @" \(.*?\)", string.Empty);
 
                     if (tempStringWithRegex == listOfDeletionRequests.Movies[j].Title)
@@ -101,7 +101,7 @@ namespace VideoChecking
             {
                 for (int j = 0; j < listOfDeletionRequests.TvShows.Length; j++)
                 {
-                    if (Path.GetFileNameWithoutExtension(tvShows[i]) == listOfDeletionRequests.TvShows[j].Title)
+                    if (new DirectoryInfo(tvShows[i]).Name == listOfDeletionRequests.TvShows[j].Title)
                     {
                         try
                         {
@@ -150,7 +150,7 @@ namespace VideoChecking
             {
                 for (int j = 0; j < listOfDeletionRequests.DocumentaryTv.Length; j++)
                 {
-                    if (Path.GetFileNameWithoutExtension(documentaryTv[i]) == listOfDeletionRequests.DocumentaryTv[j].Title)
+                    if (new DirectoryInfo(documentaryTv[i]).Name == listOfDeletionRequests.DocumentaryTv[j].Title)
                     {
                         try
                         {
