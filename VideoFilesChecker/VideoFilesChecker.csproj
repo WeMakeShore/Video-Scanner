@@ -49,25 +49,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateHttpRequest.cs" />
-    <Compile Include="Drive.cs" />
-    <Compile Include="Drives.cs" />
+    <Compile Include="Drive\DriveModel.cs" />
+    <Compile Include="Drive\DrivesModel.cs" />
+    <Compile Include="Drive\IDriveModel.cs" />
     <Compile Include="ExceptionHandler.cs" />
     <Compile Include="GetFilesAndDirectories.cs" />
-    <Compile Include="IDrives.cs" />
-    <Compile Include="IVideo.cs" />
+    <Compile Include="Video\IVideo.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Plex.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Video.cs" />
+    <Compile Include="Video\Video.cs" />
     <Compile Include="VideoChecker.cs" />
     <Compile Include="VideoDeletion.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Videos.cs" />
+    <Compile Include="DataModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.VisualBasic.FileIO;
 using ExceptionHandler;
@@ -10,7 +9,7 @@ namespace VideoChecking
 {
     static class VideoDeletion
     {
-        public static Videos listOfDeletionRequests;
+        public static DataModel listOfDeletionRequests;
 
         private static List<string> movies = new List<string>();
         private static List<string> tvShows = new List<string>();
@@ -22,52 +21,47 @@ namespace VideoChecking
 
         public static void CheckForVideosToDelete()
         {
-            GetExtensionAndPathOfVideos();
-        }
-
-        private static void GetExtensionAndPathOfVideos()
-        {
-            //get video files
             for (int i = 0; i <= listOfDeletionRequests.Movies.Length - 1; i++)
             {
-                string[] moviesIndock = Directory.GetFiles(Program.moviesDockPath + @"\", listOfDeletionRequests.Movies[i].Title + "*.*");
-                movies.AddRange(moviesIndock);
-
-                string[] moviesInExternal = Directory.GetFiles(Program.moviesExtDrivePath + @"\", listOfDeletionRequests.Movies[i].Title + "*.*");
-                movies.AddRange(moviesInExternal);
+                for (int j = 0; j < Program.moviePaths.Count; j++)
+                {
+                    string[] tempMovies = Directory.GetFiles(Program.moviePaths[j] + @"\", listOfDeletionRequests.Movies[i].Title + "*.*");
+                    movies.AddRange(tempMovies);
+                }
             }
-
-            movies = movies.Distinct().ToList();
 
             for (int i = 0; i <= listOfDeletionRequests.DocumentaryMovies.Length - 1; i++)
             {
-                string[] docMoviesInExternal = Directory.GetFiles(Program.docMoviesExtDrivePath + @"\", listOfDeletionRequests.DocumentaryMovies[i].Title + "*.*");
-
-                documentaryMovies.AddRange(docMoviesInExternal);
-            }
-
-            //get directory folders
-            foreach (Video directory in listOfDeletionRequests.TvShows)
-            {
-                if (Directory.Exists(Program.tvShowsDockPath + "\\" + directory.Title))
+                for (int j = 0; j < Program.docMoviesPath.Count; j++)
                 {
-                    tvShows.Add(Program.tvShowsDockPath + "\\" + directory.Title);
-                }
-                else if (Directory.Exists(Program.tvShowsExtDrivePath + "\\" + directory.Title))
-                {
-                    tvShows.Add(Program.tvShowsExtDrivePath + "\\" + directory.Title);
+                    string[] tempDocMovies = Directory.GetFiles(Program.docMoviesPath[j] + @"\", listOfDeletionRequests.DocumentaryMovies[i].Title + "*.*");
+                    documentaryMovies.AddRange(tempDocMovies);
                 }
             }
 
-            foreach (Video directory in listOfDeletionRequests.DocumentaryTv)
+            for (int i = 0; i < listOfDeletionRequests.TvShows.Length; i++)
             {
-                if (Directory.Exists(Program.docTvShowsExtDrivePath + "\\" + directory.Title))
+                for (int j = 0; j < Program.tvShowPaths.Count; j++)
                 {
-                    documentaryTv.Add(Program.docTvShowsExtDrivePath + "\\" + directory.Title);
+                    if (Directory.Exists(Program.tvShowPaths[j] + "\\" + listOfDeletionRequests.TvShows[i].Title))
+                    {
+                        tvShows.Add(Program.tvShowPaths[j] + "\\" + listOfDeletionRequests.TvShows[i].Title);
+                    }
+                }
+            }
+
+            for (int i = 0; i < listOfDeletionRequests.DocumentaryTv.Length; i++)
+            {
+                for (int j = 0; j < Program.docTvShowsPath.Count; j++)
+                {
+                    if (Directory.Exists(Program.docTvShowsPath[j] + "\\" + listOfDeletionRequests.DocumentaryTv[i].Title))
+                    {
+                        tvShows.Add(Program.docTvShowsPath[j] + "\\" + listOfDeletionRequests.DocumentaryTv[i].Title);
+                    }
                 }
             }
         }
-     
+
         public static void DeleteVideos()
         {
             for (int i = 0; i < movies.Count; i++)

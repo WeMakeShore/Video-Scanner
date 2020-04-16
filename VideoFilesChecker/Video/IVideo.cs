@@ -1,8 +1,9 @@
 ﻿using System;
+using VideoFilesChecker.Drive;
 
 namespace VideoFilesChecker
 {
-    interface IVideo : IDrives
+    interface IVideo : IDriveModel
     {
         string Title { get; set; }
         string Year { get; set; }

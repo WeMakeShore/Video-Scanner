@@ -5,7 +5,6 @@ public class Video
     public string Title { get; set; }
     public string Year { get; set; }
     public long Size { get; set; }
-
     public string DriveLocation { get; set; }
     public DateTime CreationTime { get; set; }
 

@@ -10,12 +10,10 @@ namespace VideoChecking
     {
         public static Settings settings = Settings.GetSettings();
 
-        public static string moviesDockPath = settings.MoviesDockPath;
-        public static string moviesExtDrivePath = settings.MoviesExtDrivePath;
-        public static string tvShowsDockPath = settings.TvShowsDockPath;
-        public static string tvShowsExtDrivePath = settings.TvShowsExtDrivePath;
-        public static string docMoviesExtDrivePath = settings.DocMoviesExtDrivePath;
-        public static string docTvShowsExtDrivePath = settings.DocTvExtDrivePath;
+        public static List<string> moviePaths = new List<string>();
+        public static List<string> tvShowPaths = new List<string>();
+        public static List<string> docMoviesPath = new List<string>();
+        public static List<string> docTvShowsPath = new List<string>();
 
         public static List<Video> listOfMovies = new List<Video>();
         public static List<Video> listOfTvShows = new List<Video>();
@@ -41,13 +39,13 @@ namespace VideoChecking
 
         private static void RunProgram()
         {
-            if (Exceptions.checkForPreviousException())
-            {
-                Console.WriteLine("Warning - Unexpected closure on previous run. Not getting videos before update.\n");
-            } else
-            {
-                //Generate.GetVideosBeforeUpdate();
-            }
+            //if (Exceptions.checkForPreviousException())
+            //{
+            //    Console.WriteLine("Warning - Unexpected closure on previous run. Not getting videos before update.\n");
+            //} else
+            //{
+            //    Generate.GetVideosBeforeUpdate();
+            //}
 
             GetFilesAndDirectories.UpdateVideosAndDirectories();
 
@@ -73,15 +71,18 @@ namespace VideoChecking
             //    Environment.Exit(0);
             //}
 
-            Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(GetFilesAndDirectories.GetSerializedJsonVideoFileData());}).Wait();
-
             Task.Run(async () => { await CreateHttpRequest.CreateGETRequest(); }).Wait();
+
+            Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(GetFilesAndDirectories.GetSerializedJsonVideoFileData());}).Wait();
 
             VideoDeletion.CheckForVideosToDelete();
 
             VideoDeletion.DeleteVideos();
 
-            Plex.RefreshPlexLibraries();
+            if (settings.RefreshLibraries == true)
+            {
+                Plex.RefreshPlexLibraries();
+            }
 
             Exceptions.RemovePreviousExceptionLog();
 

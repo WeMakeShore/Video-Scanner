@@ -1,41 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 public class Settings
 {
-    public string MoviesDockPath { get; set; }
-    public string MoviesExtDrivePath { get; set; }
-    public string TvShowsDockPath { get; set; }
-    public string TvShowsExtDrivePath { get; set; }
-    public string DocMoviesExtDrivePath { get; set; }
-    public string DocTvExtDrivePath { get; set; }
+    public string[] VideoPaths { get; set; }
     public string VideosJsonPath { get; set; }
     public string ExceptionLoggerPath { get; set; }
     public string PostUrl { get; set; }
     public string GetUrl { get; set; }
     public string BearerToken { get; set; }
     public string PlexLibrariesRefreshString { get; set; }
+    public bool RefreshLibraries { get; set; }
 
-    public Settings(string moviesDockPath, string moviesExtDrivePath, string tvShowsDockPath, string tvShowsExtDrivePath, string docMoviesExtDrivePath, string docTvExtDrivePath,
-        string videosJsonPath, string exceptionLoggerPath, string postUrl, string getUrl, string bearerToken, string plexLibrariesRefreshString)
+    public Settings(string[] videoPaths, string videosJsonPath, string exceptionLoggerPath, string postUrl, string getUrl, string bearerToken, string plexLibrariesRefreshString
+        , bool refreshLibraries)
     {
-        this.MoviesDockPath = moviesDockPath;
-        this.MoviesExtDrivePath = moviesExtDrivePath;
-        this.TvShowsDockPath = tvShowsDockPath;
-        this.TvShowsExtDrivePath = tvShowsExtDrivePath;
-        this.DocMoviesExtDrivePath = docMoviesExtDrivePath;
-        this.DocTvExtDrivePath = docTvExtDrivePath;
+        this.VideoPaths = videoPaths;
         this.VideosJsonPath = videosJsonPath;
         this.ExceptionLoggerPath = exceptionLoggerPath;
         this.PostUrl = postUrl;
         this.GetUrl = getUrl;
         this.BearerToken = bearerToken;
         this.PlexLibrariesRefreshString = plexLibrariesRefreshString;
+        this.RefreshLibraries = refreshLibraries;
     }
 
     public static Settings GetSettings()

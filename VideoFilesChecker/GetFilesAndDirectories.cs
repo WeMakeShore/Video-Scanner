@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 using VideoChecking;
 using Newtonsoft.Json;
 using VideoFilesChecker;
+using VideoFilesChecker.Drive;
+using System.Collections.Generic;
 
 /* Get files and directories and stores the results to videos.json */
 
@@ -16,6 +18,8 @@ namespace GetVideoData
 
         public static void UpdateVideosAndDirectories()
         {
+            AssignVideoPathTypes();
+
             GetMovies();
 
             GetTvShows();
@@ -27,6 +31,21 @@ namespace GetVideoData
             OrderEntries();
 
             GenerateJsonVideoFile();
+        }
+
+        private static void AssignVideoPathTypes()
+        {
+            for (int i = 0; i < Program.settings.VideoPaths.Length; i++)
+            {
+                switch(new DirectoryInfo(Program.settings.VideoPaths[i]).Name)
+                {
+                    case "Movies": Program.moviePaths.Add(Program.settings.VideoPaths[i]); break;
+                    case "TV Shows": Program.tvShowPaths.Add(Program.settings.VideoPaths[i]); break;
+                    case "Documentary Movies": Program.docMoviesPath.Add(Program.settings.VideoPaths[i]); break;
+                    case "Documentary TV": Program.docTvShowsPath.Add(Program.settings.VideoPaths[i]); break;
+                    default: throw new Exception("Invalid VideoPath");
+                }
+            }
         }
 
         //public static void GetVideosBeforeUpdate()
@@ -45,11 +64,9 @@ namespace GetVideoData
         //    }
         //}
 
-        private static void ScanDirectoryForFiles(string directoryPath)
+        private static void ScanDirectoryForFiles(string directoryPath, string category)
         {
-            dynamic itemData = GetItemLocationAndType(directoryPath);
-            string driveLocation = itemData.driveLocation;
-            string category = itemData.category;
+            string driveLocation = directoryPath.Contains("(External Hard Drive)") ? "External Hard Drive" : "Dock";
 
             if (Directory.Exists(directoryPath))
             {
@@ -84,11 +101,10 @@ namespace GetVideoData
             }
         }
 
-        private static void ScanDirectory(string directoryPath) // TODO: Add driveLocation and category to Video object?
+        private static void ScanDirectory(string directoryPath, string category)
         {
-            dynamic itemData = GetItemLocationAndType(directoryPath);
-            string driveLocation = itemData.driveLocation;
-            string category = itemData.category;
+            //dynamic itemData = GetItemLocationAndType(directoryPath);
+            string driveLocation = directoryPath.Contains("(External Hard Drive)") ? "External Hard Drive" : "Dock";
 
             if (Directory.Exists(directoryPath))
             {
@@ -110,54 +126,36 @@ namespace GetVideoData
             }
         }
 
-        private static object GetItemLocationAndType(string directoryPath)
-        {
-            string driveLocation = String.Empty;
-            string category = String.Empty;
-
-            switch (directoryPath)
-            {
-                case var moviesDockPath when directoryPath == Program.settings.MoviesDockPath:
-                    driveLocation = "Movies (Dock)"; category = "Movie"; break;
-                case var moviesExtDrivePath when directoryPath == Program.settings.MoviesExtDrivePath:
-                    driveLocation = "Movies (External Hard Drive)"; category = "Movie"; break;
-                case var tvShowsDockPath when directoryPath == Program.settings.TvShowsDockPath:
-                    driveLocation = "TV Shows (Dock)"; category = "TV Show"; break;
-                case var tvShowsExtPath when directoryPath == Program.settings.TvShowsExtDrivePath:
-                    driveLocation = "TV Shows (External Hard Drive)"; category = "TV Show"; break;
-                case var documentaryMoviesExtPath when directoryPath == Program.settings.DocMoviesExtDrivePath:
-                    driveLocation = "Documentary Movies (External Hard Drive)"; category = "Documentary Movie"; break;
-                case var documentaryTvExtPath when directoryPath == Program.settings.DocTvExtDrivePath:
-                    driveLocation = "Documentary TV (External Hard Drive)"; category = "Documentary TV"; break;
-            }
-
-            return new
-            {
-                driveLocation = driveLocation,
-                category = category
-            };
-        }
-
         private static void GetMovies()
         {
-            ScanDirectoryForFiles(Program.moviesDockPath);
-            ScanDirectoryForFiles(Program.moviesExtDrivePath);
+            for (int i = 0; i < Program.moviePaths.Count; i++)
+            {
+                ScanDirectoryForFiles(Program.moviePaths[i], "Movie");
+            }
         }
 
         private static void GetTvShows()
         {
-            ScanDirectory(Program.tvShowsDockPath);
-            ScanDirectory(Program.tvShowsExtDrivePath);
+            for (int i = 0; i < Program.tvShowPaths.Count; i++)
+            {
+                ScanDirectory(Program.tvShowPaths[i], "TV Show");
+            }
         }
 
         private static void GetDocumentaryMovies()
         {
-            ScanDirectoryForFiles(Program.docMoviesExtDrivePath);
+            for (int i = 0; i < Program.docMoviesPath.Count; i++)
+            {
+                ScanDirectoryForFiles(Program.docMoviesPath[i], "Documentary Movie");
+            }
         }
 
         private static void GetDocumentaryTv()
         {
-            ScanDirectory(Program.docTvShowsExtDrivePath);
+            for (int i = 0; i < Program.docTvShowsPath.Count; i++)
+            {
+                ScanDirectory(Program.docTvShowsPath[i], "Documentary TV");
+            }
         }
 
         private static void OrderEntries()
@@ -170,12 +168,11 @@ namespace GetVideoData
 
         private static void GenerateJsonVideoFile()
         {
-            Drives drives = Drives.GetAvailableDriveSpace();;
+            List<DriveModel> drives = DrivesModel.GetDrives();
 
             string videoData = JsonConvert.SerializeObject(new
             {
-                DockHardDrive = drives.DockHardDrive,
-                ExternalHardDrive = drives.ExternalHardDrive,
+                Drives = drives,
                 Movies = Program.listOfMovies,
                 TvShows = Program.listOfTvShows,
                 DocumentaryMovies = Program.listOfDocumentaryMovies,
@@ -207,7 +204,7 @@ namespace GetVideoData
             return serializedData;
         }
 
-        public static Videos GetDeserializedJsonVideoFileData()
+        public static DataModel GetDeserializedJsonVideoFileData()
         {
             string serializedData = String.Empty;
 
@@ -219,7 +216,7 @@ namespace GetVideoData
                 throw new FileNotFoundException();
             }
 
-            var deserializedData = JsonConvert.DeserializeObject<Videos>(serializedData);
+            var deserializedData = JsonConvert.DeserializeObject<DataModel>(serializedData);
 
             return deserializedData;
         }

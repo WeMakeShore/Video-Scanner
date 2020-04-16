@@ -1,23 +1,22 @@
-﻿
-using VideoFilesChecker;
+﻿using VideoFilesChecker;
 
 namespace VideoChecking
 {
-    public class Videos
+    public class DataModel
     {
         public Video[] Movies;
         public Video[] TvShows;
         public Video[] DocumentaryMovies;
         public Video[] DocumentaryTv;
-        public Drives DockHardDirve { get; set; }
-        public Drives ExternalHardDrive { get; set; }
+        public DriveModel[] Drives;
 
-        public Videos(Video[] movies, Video[] tvShows, Video[] documentaryMovies, Video[] documentaryTv)
+        public DataModel(Video[] movies, Video[] tvShows, Video[] documentaryMovies, Video[] documentaryTv, DriveModel[] drives)
         {
             this.Movies = movies;
             this.TvShows = tvShows;
             this.DocumentaryMovies = documentaryMovies;
             this.DocumentaryTv = documentaryTv;
+            this.Drives = drives;
         }
     }
 }
