@@ -46,7 +46,7 @@ namespace VideoFilesChecker.Drive
 
             }
 
-            return new DriveModel(drive, percentageUnavailable, dDrive.AvailableFreeSpace, dDrive.TotalSize);
+            return new DriveModel(drive, dDrive.VolumeLabel, percentageUnavailable, dDrive.AvailableFreeSpace, dDrive.TotalSize);
         }
     }
 }
