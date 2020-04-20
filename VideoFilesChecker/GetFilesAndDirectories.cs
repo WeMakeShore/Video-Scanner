@@ -14,8 +14,6 @@ namespace GetVideoData
 {
     public static class GetFilesAndDirectories
     {
-        private static readonly string yearRegex = @"(.+)\s\((\d{4})\)\.";
-
         public static void UpdateVideosAndDirectories()
         {
             AssignVideoPathTypes();
@@ -37,7 +35,7 @@ namespace GetVideoData
         {
             for (int i = 0; i < Program.settings.VideoPaths.Length; i++)
             {
-                switch(new DirectoryInfo(Program.settings.VideoPaths[i]).Name)
+                switch (new DirectoryInfo(Program.settings.VideoPaths[i]).Name)
                 {
                     case "Movies": Program.moviePaths.Add(Program.settings.VideoPaths[i]); break;
                     case "TV Shows": Program.tvShowPaths.Add(Program.settings.VideoPaths[i]); break;
@@ -67,6 +65,7 @@ namespace GetVideoData
         private static void ScanDirectoryForFiles(string directoryPath, string category)
         {
             string driveLocation = directoryPath.Contains("(External Hard Drive)") ? "External Hard Drive" : "Dock";
+            const string yearRegex = @"(.+)\s\((\d{4})\)\.";
 
             if (Directory.Exists(directoryPath))
             {
@@ -103,16 +102,33 @@ namespace GetVideoData
 
         private static void ScanDirectory(string directoryPath, string category)
         {
-            //dynamic itemData = GetItemLocationAndType(directoryPath);
             string driveLocation = directoryPath.Contains("(External Hard Drive)") ? "External Hard Drive" : "Dock";
+            const string yearRegex = @"(.+)\s\((\d{4})\)";
 
             if (Directory.Exists(directoryPath))
             {
                 DirectoryInfo dirInfo = new DirectoryInfo(directoryPath);
                 foreach (DirectoryInfo d in dirInfo.GetDirectories().Where(m => m.Extension != ".srt"))
                 {
-                    string title = d.Name;
+                    string title = String.Empty;
                     string year = String.Empty;
+
+                    MatchCollection regexYearResult = Regex.Matches(d.Name, yearRegex);
+
+                    foreach (Match match in regexYearResult)
+                    {
+                        title = match.Groups[1].Value;
+                        year = match.Groups[2].Value;
+                    }
+
+                    if (String.IsNullOrEmpty(title))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine($"Warning - Title is null or empty. ({directoryPath}\\{d.Name})\n");
+                        title = Path.GetFileNameWithoutExtension(d.Name);
+                        Console.ResetColor();
+                    }
+
                     long size = d.EnumerateFiles("*", SearchOption.AllDirectories).Sum(fi => fi.Length);
 
                     string[] subdirectoryEntries = Directory.GetDirectories(d.FullName);
@@ -182,10 +198,11 @@ namespace GetVideoData
             if (Directory.Exists(Path.GetDirectoryName(Program.settings.VideosJsonPath)))
             {
                 File.WriteAllText(Program.settings.VideosJsonPath, videoData);
-            } else
+            }
+            else
             {
                 throw new FileNotFoundException();
-            }         
+            }
         }
 
         public static string GetSerializedJsonVideoFileData()
@@ -211,7 +228,8 @@ namespace GetVideoData
             if (File.Exists(Program.settings.VideosJsonPath))
             {
                 serializedData = File.ReadAllText(Program.settings.VideosJsonPath);
-            } else
+            }
+            else
             {
                 throw new FileNotFoundException();
             }

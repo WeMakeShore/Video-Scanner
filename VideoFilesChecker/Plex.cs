@@ -8,7 +8,7 @@ public class Plex
     {
         WebRequest request = WebRequest.Create(Program.settings.PlexLibrariesRefreshString);
 
-        request.Timeout = 7000;
+        request.Timeout = 10000;
 
         try
         {
