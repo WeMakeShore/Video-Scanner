@@ -73,23 +73,18 @@ namespace GetVideoData
                 foreach (FileInfo f in dirInfo.GetFiles().Where(m => m.Extension != ".srt"))
                 {
                     string title = String.Empty;
-                    string year = String.Empty;
+                    int year = 0;
 
                     MatchCollection regexYearResult = Regex.Matches(f.Name, yearRegex);
 
                     foreach (Match match in regexYearResult)
                     {
                         title = match.Groups[1].Value;
-                        year = match.Groups[2].Value;
+                        year = int.Parse(match.Groups[2].Value);
                     }
 
-                    if (String.IsNullOrEmpty(title))
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine($"Warning - Title is null or empty. ({directoryPath}\\{f.Name})\n");
-                        title = Path.GetFileNameWithoutExtension(f.Name);
-                        Console.ResetColor();
-                    }
+                    title = CheckTitle(title, directoryPath, f.Name);
+                    CheckYear(year, directoryPath, f.Name);
 
                     switch (category)
                     {
@@ -111,23 +106,18 @@ namespace GetVideoData
                 foreach (DirectoryInfo d in dirInfo.GetDirectories().Where(m => m.Extension != ".srt"))
                 {
                     string title = String.Empty;
-                    string year = String.Empty;
+                    int year = 0;
 
                     MatchCollection regexYearResult = Regex.Matches(d.Name, yearRegex);
 
                     foreach (Match match in regexYearResult)
                     {
                         title = match.Groups[1].Value;
-                        year = match.Groups[2].Value;
+                        year = int.Parse(match.Groups[2].Value);
                     }
 
-                    if (String.IsNullOrEmpty(title))
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine($"Warning - Title is null or empty. ({directoryPath}\\{d.Name})\n");
-                        title = Path.GetFileNameWithoutExtension(d.Name);
-                        Console.ResetColor();
-                    }
+                    title = CheckTitle(title, directoryPath, d.Name);
+                    CheckYear(year, directoryPath, d.Name);
 
                     long size = d.EnumerateFiles("*", SearchOption.AllDirectories).Sum(fi => fi.Length);
 
@@ -139,6 +129,29 @@ namespace GetVideoData
                         case "Documentary TV": Program.listOfDocumentaryTv.Add(new Video(title, year, size, driveLocation, d.CreationTime)); break;
                     }
                 }
+            }
+        }
+
+        private static string CheckTitle(string title, string path, string name)
+        {
+            if (String.IsNullOrEmpty(title))
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"Warning - Title is null or empty. ({path}\\{name})\n");
+                title = Path.GetFileNameWithoutExtension(name);
+                Console.ResetColor();
+            }
+
+            return title;
+        }
+
+        private static void CheckYear(int year, string path, string name)
+        {
+            if (year == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"Waring - Year is 0. ({path}\\{name})\n");
+                Console.ResetColor();
             }
         }
 
