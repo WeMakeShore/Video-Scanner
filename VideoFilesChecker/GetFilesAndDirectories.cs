@@ -14,6 +14,8 @@ namespace GetVideoData
 {
     public static class GetFilesAndDirectories
     {
+        public const string fileRegex = @"(.+)\s\((\d{4})\)\.";
+        public const string directoryRegex = @"(.+)\s\((\d{4})\)";
         public static void UpdateVideosAndDirectories()
         {
             AssignVideoPathTypes();
@@ -39,8 +41,8 @@ namespace GetVideoData
                 {
                     case "Movies": Program.moviePaths.Add(Program.settings.VideoPaths[i]); break;
                     case "TV Shows": Program.tvShowPaths.Add(Program.settings.VideoPaths[i]); break;
-                    case "Documentary Movies": Program.docMoviesPath.Add(Program.settings.VideoPaths[i]); break;
-                    case "Documentary TV": Program.docTvShowsPath.Add(Program.settings.VideoPaths[i]); break;
+                    case "Documentary Movies": Program.docMoviePaths.Add(Program.settings.VideoPaths[i]); break;
+                    case "Documentary TV": Program.docTvShowPaths.Add(Program.settings.VideoPaths[i]); break;
                     default: throw new Exception("Invalid VideoPath");
                 }
             }
@@ -65,7 +67,6 @@ namespace GetVideoData
         private static void ScanDirectoryForFiles(string directoryPath, string category)
         {
             string driveLocation = directoryPath.Contains("(External Hard Drive)") ? "External Hard Drive" : "Dock";
-            const string yearRegex = @"(.+)\s\((\d{4})\)\.";
 
             if (Directory.Exists(directoryPath))
             {
@@ -75,7 +76,7 @@ namespace GetVideoData
                     string title = String.Empty;
                     int year = 0;
 
-                    MatchCollection regexYearResult = Regex.Matches(f.Name, yearRegex);
+                    MatchCollection regexYearResult = Regex.Matches(f.Name, fileRegex);
 
                     foreach (Match match in regexYearResult)
                     {
@@ -98,7 +99,6 @@ namespace GetVideoData
         private static void ScanDirectory(string directoryPath, string category)
         {
             string driveLocation = directoryPath.Contains("(External Hard Drive)") ? "External Hard Drive" : "Dock";
-            const string yearRegex = @"(.+)\s\((\d{4})\)";
 
             if (Directory.Exists(directoryPath))
             {
@@ -108,7 +108,7 @@ namespace GetVideoData
                     string title = String.Empty;
                     int year = 0;
 
-                    MatchCollection regexYearResult = Regex.Matches(d.Name, yearRegex);
+                    MatchCollection regexYearResult = Regex.Matches(d.Name, directoryRegex);
 
                     foreach (Match match in regexYearResult)
                     {
@@ -132,20 +132,24 @@ namespace GetVideoData
             }
         }
 
-        private static string CheckTitle(string title, string path, string name)
+        public static string CheckTitle(string title, string path, string name, bool warnings = true)
         {
             if (String.IsNullOrEmpty(title))
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"Warning - Title is null or empty. ({path}\\{name})\n");
+                if (warnings)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"Warning - Title is null or empty. ({path}\\{name})\n");
+                    Console.ResetColor();
+                }
+
                 title = Path.GetFileNameWithoutExtension(name);
-                Console.ResetColor();
             }
 
             return title;
         }
 
-        private static void CheckYear(int year, string path, string name)
+        private static void CheckYear(int year, string path, string name, bool warnings = true)
         {
             if (year == 0)
             {
@@ -173,17 +177,17 @@ namespace GetVideoData
 
         private static void GetDocumentaryMovies()
         {
-            for (int i = 0; i < Program.docMoviesPath.Count; i++)
+            for (int i = 0; i < Program.docMoviePaths.Count; i++)
             {
-                ScanDirectoryForFiles(Program.docMoviesPath[i], "Documentary Movie");
+                ScanDirectoryForFiles(Program.docMoviePaths[i], "Documentary Movie");
             }
         }
 
         private static void GetDocumentaryTv()
         {
-            for (int i = 0; i < Program.docTvShowsPath.Count; i++)
+            for (int i = 0; i < Program.docTvShowPaths.Count; i++)
             {
-                ScanDirectory(Program.docTvShowsPath[i], "Documentary TV");
+                ScanDirectory(Program.docTvShowPaths[i], "Documentary TV");
             }
         }
 

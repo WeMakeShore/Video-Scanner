@@ -12,8 +12,8 @@ namespace VideoChecking
 
         public static List<string> moviePaths = new List<string>();
         public static List<string> tvShowPaths = new List<string>();
-        public static List<string> docMoviesPath = new List<string>();
-        public static List<string> docTvShowsPath = new List<string>();
+        public static List<string> docMoviePaths = new List<string>();
+        public static List<string> docTvShowPaths = new List<string>();
 
         public static List<Video> listOfMovies = new List<Video>();
         public static List<Video> listOfTvShows = new List<Video>();

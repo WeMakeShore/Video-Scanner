@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Microsoft.VisualBasic.FileIO;
 using ExceptionHandler;
+using GetVideoData;
 
 namespace VideoChecking
 {
@@ -32,9 +33,9 @@ namespace VideoChecking
 
             for (int i = 0; i <= listOfDeletionRequests.DocumentaryMovies.Length - 1; i++)
             {
-                for (int j = 0; j < Program.docMoviesPath.Count; j++)
+                for (int j = 0; j < Program.docMoviePaths.Count; j++)
                 {
-                    string[] tempDocMovies = Directory.GetFiles(Program.docMoviesPath[j] + @"\", listOfDeletionRequests.DocumentaryMovies[i].Title + "*.*");
+                    string[] tempDocMovies = Directory.GetFiles(Program.docMoviePaths[j] + @"\", listOfDeletionRequests.DocumentaryMovies[i].Title + "*.*");
                     documentaryMovies.AddRange(tempDocMovies);
                 }
             }
@@ -43,20 +44,24 @@ namespace VideoChecking
             {
                 for (int j = 0; j < Program.tvShowPaths.Count; j++)
                 {
-                    if (Directory.Exists(Program.tvShowPaths[j] + "\\" + listOfDeletionRequests.TvShows[i].Title))
+                    string year = listOfDeletionRequests.TvShows[i].Year != 0 ? " (" + listOfDeletionRequests.TvShows[i].Year + ")" : string.Empty;
+
+                    if (Directory.Exists(Program.tvShowPaths[j] + @"\" + listOfDeletionRequests.TvShows[i].Title + year))
                     {
-                        tvShows.Add(Program.tvShowPaths[j] + "\\" + listOfDeletionRequests.TvShows[i].Title);
+                        tvShows.Add(Program.tvShowPaths[j] + @"\" + listOfDeletionRequests.TvShows[i].Title + year);
                     }
                 }
             }
 
             for (int i = 0; i < listOfDeletionRequests.DocumentaryTv.Length; i++)
             {
-                for (int j = 0; j < Program.docTvShowsPath.Count; j++)
+                for (int j = 0; j < Program.docTvShowPaths.Count; j++)
                 {
-                    if (Directory.Exists(Program.docTvShowsPath[j] + "\\" + listOfDeletionRequests.DocumentaryTv[i].Title))
+                    string year = listOfDeletionRequests.DocumentaryTv[i].Year != 0 ? " (" + listOfDeletionRequests.DocumentaryTv[i].Year + ")" : string.Empty;
+
+                    if (Directory.Exists(Program.docTvShowPaths[j] + @"\" + listOfDeletionRequests.DocumentaryTv[i].Title + year))
                     {
-                        tvShows.Add(Program.docTvShowsPath[j] + "\\" + listOfDeletionRequests.DocumentaryTv[i].Title);
+                        documentaryTv.Add(Program.docTvShowPaths[j] + @"\" + listOfDeletionRequests.DocumentaryTv[i].Title + year);
                     }
                 }
             }
@@ -68,10 +73,20 @@ namespace VideoChecking
             {
                 for (int j = 0; j < listOfDeletionRequests.Movies.Length; j++)
                 {
-                    // Removes year of movie, e.g (2019).
-                    string tempStringWithRegex = Regex.Replace(Path.GetFileNameWithoutExtension(movies[i]), @" \(.*?\)", string.Empty);
+                    string title = String.Empty;
+                    int year = 0;
 
-                    if (tempStringWithRegex == listOfDeletionRequests.Movies[j].Title)
+                    MatchCollection matches = Regex.Matches(Path.GetFileName(movies[i]), GetFilesAndDirectories.fileRegex);
+
+                    foreach (Match match in matches)
+                    {
+                        title = match.Groups[1].Value;
+                        year = int.Parse(match.Groups[2].Value);
+                    }
+
+                    title = GetFilesAndDirectories.CheckTitle(title, movies[i], new FileInfo(movies[i]).Name, false);
+
+                    if (title == listOfDeletionRequests.Movies[j].Title && year == listOfDeletionRequests.Movies[j].Year)
                     {
                         try
                         {
@@ -95,7 +110,20 @@ namespace VideoChecking
             {
                 for (int j = 0; j < listOfDeletionRequests.TvShows.Length; j++)
                 {
-                    if (new DirectoryInfo(tvShows[i]).Name == listOfDeletionRequests.TvShows[j].Title)
+                    string title = String.Empty;
+                    int year = 0;
+
+                    MatchCollection matches = Regex.Matches(Path.GetFileName(tvShows[i]), GetFilesAndDirectories.directoryRegex);
+
+                    foreach (Match match in matches)
+                    {
+                        title = match.Groups[1].Value;
+                        year = int.Parse(match.Groups[2].Value);
+                    }
+
+                    title = GetFilesAndDirectories.CheckTitle(title, tvShows[i], new DirectoryInfo(tvShows[i]).Name, false);
+
+                    if (title == listOfDeletionRequests.TvShows[j].Title && year == listOfDeletionRequests.TvShows[j].Year)
                     {
                         try
                         {
@@ -119,9 +147,20 @@ namespace VideoChecking
             {
                 for (int j = 0; j < listOfDeletionRequests.DocumentaryMovies.Length; j++)
                 {
-                    string tempStringWithRegex = Regex.Replace(Path.GetFileNameWithoutExtension(documentaryMovies[i]), @" \(.*?\)", string.Empty);
+                    string title = String.Empty;
+                    int year = 0;
 
-                    if (tempStringWithRegex == listOfDeletionRequests.DocumentaryMovies[j].Title)
+                    MatchCollection matches = Regex.Matches(Path.GetFileName(documentaryMovies[i]), GetFilesAndDirectories.fileRegex);
+
+                    foreach (Match match in matches)
+                    {
+                        title = match.Groups[1].Value;
+                        year = int.Parse(match.Groups[2].Value);
+                    }
+
+                    title = GetFilesAndDirectories.CheckTitle(title, documentaryMovies[i], new FileInfo(documentaryMovies[i]).Name, false);
+
+                    if (title == listOfDeletionRequests.DocumentaryMovies[j].Title && year == listOfDeletionRequests.DocumentaryMovies[j].Year)
                     {
                         try
                         {
@@ -144,7 +183,20 @@ namespace VideoChecking
             {
                 for (int j = 0; j < listOfDeletionRequests.DocumentaryTv.Length; j++)
                 {
-                    if (new DirectoryInfo(documentaryTv[i]).Name == listOfDeletionRequests.DocumentaryTv[j].Title)
+                    string title = String.Empty;
+                    int year = 0;
+
+                    MatchCollection matches = Regex.Matches(Path.GetFileName(documentaryTv[i]), GetFilesAndDirectories.directoryRegex);
+
+                    foreach (Match match in matches)
+                    {
+                        title = match.Groups[1].Value;
+                        year = int.Parse(match.Groups[2].Value);
+                    }
+
+                    title = GetFilesAndDirectories.CheckTitle(title, documentaryTv[i], new DirectoryInfo(documentaryTv[i]).Name, false);
+
+                    if (title == listOfDeletionRequests.DocumentaryTv[j].Title && year == listOfDeletionRequests.DocumentaryTv[j].Year)
                     {
                         try
                         {
