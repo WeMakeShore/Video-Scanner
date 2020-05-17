@@ -73,11 +73,11 @@ namespace VideoChecking
 
             Task.Run(async () => { await CreateHttpRequest.CreateGETRequest(); }).Wait();
 
-            Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(GetFilesAndDirectories.GetSerializedJsonVideoFileData());}).Wait();
-
             VideoDeletion.CheckForVideosToDelete();
 
             VideoDeletion.DeleteVideos();
+
+            Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(GetFilesAndDirectories.GetSerializedJsonVideoFileData());}).Wait();
 
             if (settings.RefreshLibraries == true)
             {
