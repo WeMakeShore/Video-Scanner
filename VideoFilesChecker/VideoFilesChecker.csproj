@@ -54,6 +54,12 @@
     <Compile Include="Drive\IDriveModel.cs" />
     <Compile Include="ExceptionHandler.cs" />
     <Compile Include="GetFilesAndDirectories.cs" />
+    <Compile Include="Series\IShow.cs" />
+    <Compile Include="Series\Series\Episode\Episode.cs" />
+    <Compile Include="Series\Series\Episode\IEpisode.cs" />
+    <Compile Include="Series\Series\ISeries.cs" />
+    <Compile Include="Series\Series\Series.cs" />
+    <Compile Include="Series\Show.cs" />
     <Compile Include="Video\IVideo.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Plex.cs" />

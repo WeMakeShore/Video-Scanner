@@ -5,58 +5,58 @@ public class Logger
 {
     public static void PrintGETData()
     {
-        LogMoviesForDeletion();
+        //LogMoviesForDeletion();
 
-        LogTvShowsForDeletion();
+        //LogTvShowsForDeletion();
 
-        LogDocumentaryMoviesForDeletion();
+        //LogDocumentaryMoviesForDeletion();
 
-        LogDocumentaryTvForDeletion();
+        //LogDocumentaryTvForDeletion();
     }
 
-    private static void LogMoviesForDeletion()
-    {
-        string lineBreak = VideoDeletion.listOfDeletionRequests.Movies.Length > 0 ? "\n" : "";
+    //private static void LogMoviesForDeletion()
+    //{
+    //    string lineBreak = VideoDeletion.listOfDeletionRequests.Movies.Length > 0 ? "\n" : "";
 
-        foreach (Video movie in VideoDeletion.listOfDeletionRequests.Movies)
-        {
-            Console.WriteLine("GET [movie]: " + movie.Title + lineBreak);
-        }
-    }
+    //    foreach (Video movie in VideoDeletion.listOfDeletionRequests.Movies)
+    //    {
+    //        Console.WriteLine("GET [movie]: " + movie.Title + lineBreak);
+    //    }
+    //}
 
-    private static void LogTvShowsForDeletion()
-    {
-        string lineBreak = VideoDeletion.listOfDeletionRequests.TvShows.Length > 0 ? "\n" : "";
+    //private static void LogTvShowsForDeletion()
+    //{
+    //    string lineBreak = VideoDeletion.listOfDeletionRequests.TvShows.Length > 0 ? "\n" : "";
 
-        foreach (Video tvShow in VideoDeletion.listOfDeletionRequests.TvShows)
-        {
-            Console.WriteLine("GET [TV Show]: " + tvShow.Title + lineBreak);
-        }
-    }
+    //    foreach (Video tvShow in VideoDeletion.listOfDeletionRequests.TvShows)
+    //    {
+    //        Console.WriteLine("GET [TV Show]: " + tvShow.Title + lineBreak);
+    //    }
+    //}
 
-    private static void LogDocumentaryMoviesForDeletion()
-    {
-        string lineBreak = VideoDeletion.listOfDeletionRequests.DocumentaryMovies.Length > 0 ? "\n" : "";
+    //private static void LogDocumentaryMoviesForDeletion()
+    //{
+    //    string lineBreak = VideoDeletion.listOfDeletionRequests.DocumentaryMovies.Length > 0 ? "\n" : "";
 
-        foreach (Video documentaryMovies in VideoDeletion.listOfDeletionRequests.DocumentaryMovies)
-        {
-            Console.WriteLine("GET [Documentary Movies]: " + documentaryMovies.Title + lineBreak);
-        }
-    }
+    //    foreach (Video documentaryMovies in VideoDeletion.listOfDeletionRequests.DocumentaryMovies)
+    //    {
+    //        Console.WriteLine("GET [Documentary Movies]: " + documentaryMovies.Title + lineBreak);
+    //    }
+    //}
 
-    private static void LogDocumentaryTvForDeletion()
-    {
-        string lineBreak = VideoDeletion.listOfDeletionRequests.DocumentaryMovies.Length > 0 ? "\n" : "";
+    //private static void LogDocumentaryTvForDeletion()
+    //{
+    //    string lineBreak = VideoDeletion.listOfDeletionRequests.DocumentaryMovies.Length > 0 ? "\n" : "";
 
-        foreach (Video documentaryTv in VideoDeletion.listOfDeletionRequests.DocumentaryTv)
-        {
-            Console.WriteLine("GET [Documentary TV]: " + documentaryTv.Title + lineBreak);
-        }
+    //    foreach (Video documentaryTv in VideoDeletion.listOfDeletionRequests.DocumentaryTv)
+    //    {
+    //        Console.WriteLine("GET [Documentary TV]: " + documentaryTv.Title + lineBreak);
+    //    }
 
-        if (VideoDeletion.listOfDeletionRequests.DocumentaryTv.Length > 0)
-        {
-            Console.WriteLine();
-        }
-    }
+    //    if (VideoDeletion.listOfDeletionRequests.DocumentaryTv.Length > 0)
+    //    {
+    //        Console.WriteLine();
+    //    }
+    //}
 }
 

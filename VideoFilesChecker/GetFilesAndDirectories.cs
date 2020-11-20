@@ -100,6 +100,8 @@ namespace GetVideoData
         {
             string driveLocation = directoryPath.Contains("(External Hard Drive)") ? "External Hard Drive" : "Dock";
 
+            List<Series> series = new List<Series>();
+
             if (Directory.Exists(directoryPath))
             {
                 DirectoryInfo dirInfo = new DirectoryInfo(directoryPath);
@@ -122,11 +124,34 @@ namespace GetVideoData
                     long size = d.EnumerateFiles("*", SearchOption.AllDirectories).Sum(fi => fi.Length);
 
                     string[] subdirectoryEntries = Directory.GetDirectories(d.FullName);
+                    string dirName = String.Empty;
 
-                    switch (category)
+                    foreach (var seriesDir in subdirectoryEntries)
                     {
-                        case "TV Show": Program.listOfTvShows.Add(new Video(title, year, size, driveLocation, d.CreationTime)); break;
-                        case "Documentary TV": Program.listOfDocumentaryTv.Add(new Video(title, year, size, driveLocation, d.CreationTime)); break;
+                        List<Episode> Episodes = new List<Episode>(); //TOOD: Change to Episode class
+                        dirName = seriesDir;
+
+                        if (Directory.Exists(seriesDir))
+                        {
+                            DirectoryInfo dirEpisodeInfo = new DirectoryInfo(seriesDir);
+                            foreach (FileInfo f in dirEpisodeInfo.GetFiles().Where(m => m.Extension != ".srt"))
+                            {
+                                string seriesTitle = CheckTitle(f.Name, directoryPath, f.Name);
+
+                                switch (category)
+                                {
+                                   case "TV Show": Episodes.Add(new Episode(seriesTitle, f.Length, f.CreationTime)); break;
+                                   case "Documentary TV": Episodes.Add(new Episode(seriesTitle, f.Length, f.CreationTime)); break;
+                                }
+                            }
+                            series.Add(new Series(Path.GetFileName(seriesDir), Episodes.ToArray()));
+                        }          
+                    }
+
+                    if (category == "TV Show") {
+                        Program.listOfTvShows.Add(new Show(title, year, size, driveLocation, series));
+                    } else {
+                        Program.listOfDocumentaryTv.Add(new Show(title, year, size, driveLocation, series));
                     }
                 }
             }
@@ -142,16 +167,14 @@ namespace GetVideoData
                     Console.WriteLine($"Warning - Title is null or empty. ({path}\\{name})\n");
                     Console.ResetColor();
                 }
-
-                title = Path.GetFileNameWithoutExtension(name);
             }
 
-            return title;
+            return Path.GetFileNameWithoutExtension(title);
         }
 
         private static void CheckYear(int year, string path, string name, bool warnings = true)
         {
-            if (year == 0)
+            if (year == 0 && warnings)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"Waring - Year is 0. ({path}\\{name})\n");

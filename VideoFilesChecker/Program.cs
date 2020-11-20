@@ -16,9 +16,9 @@ namespace VideoChecking
         public static List<string> docTvShowPaths = new List<string>();
 
         public static List<Video> listOfMovies = new List<Video>();
-        public static List<Video> listOfTvShows = new List<Video>();
+        public static List<Show> listOfTvShows = new List<Show>();
         public static List<Video> listOfDocumentaryMovies = new List<Video>();
-        public static List<Video> listOfDocumentaryTv = new List<Video>();
+        public static List<Show> listOfDocumentaryTv = new List<Show>();
 
         static void Main(string[] args)
         {
@@ -42,12 +42,14 @@ namespace VideoChecking
             //if (Exceptions.checkForPreviousException())
             //{
             //    Console.WriteLine("Warning - Unexpected closure on previous run. Not getting videos before update.\n");
-            //} else
+            //}
+            //else
             //{
             //    Generate.GetVideosBeforeUpdate();
             //}
 
             GetFilesAndDirectories.UpdateVideosAndDirectories();
+
 
             //if (!VideoChecker.VideoChangesFound())
             //{
