@@ -10,6 +10,7 @@ namespace VideoChecking
         int Year { get; set; }
         long Size { get; set; }
         string DriveLocation { get; set; }
+        DateTime CreationTime { get; set; }
         List<Series> Series { get; set; }
     }
 }

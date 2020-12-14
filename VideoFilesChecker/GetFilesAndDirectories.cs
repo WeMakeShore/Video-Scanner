@@ -128,7 +128,7 @@ namespace GetVideoData
 
                     foreach (var seriesDir in subdirectoryEntries)
                     {
-                        List<Episode> Episodes = new List<Episode>(); //TOOD: Change to Episode class
+                        List<Episode> Episodes = new List<Episode>();
                         dirName = seriesDir;
 
                         if (Directory.Exists(seriesDir))
@@ -144,14 +144,14 @@ namespace GetVideoData
                                    case "Documentary TV": Episodes.Add(new Episode(seriesTitle, f.Length, f.CreationTime)); break;
                                 }
                             }
-                            series.Add(new Series(Path.GetFileName(seriesDir), Episodes.ToArray()));
+                            series.Add(new Series(Path.GetFileName(seriesDir), dirEpisodeInfo.CreationTime, Episodes.ToArray()));
                         }          
                     }
 
                     if (category == "TV Show") {
-                        Program.listOfTvShows.Add(new Show(title, year, size, driveLocation, series));
+                        Program.listOfTvShows.Add(new Show(title, year, size, driveLocation, d.CreationTime, series));
                     } else {
-                        Program.listOfDocumentaryTv.Add(new Show(title, year, size, driveLocation, series));
+                        Program.listOfDocumentaryTv.Add(new Show(title, year, size, driveLocation, d.CreationTime, series));
                     }
                 }
             }
