@@ -167,8 +167,8 @@ namespace GetVideoData
                     Console.WriteLine($"Warning - Title is null or empty. ({path}\\{name})\n");
                     Console.ResetColor();
                 }
+                return name;
             }
-
             return Path.GetFileNameWithoutExtension(title);
         }
 
