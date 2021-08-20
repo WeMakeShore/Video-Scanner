@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 public class Video
 {
@@ -8,13 +9,12 @@ public class Video
     public string DriveLocation { get; set; }
     public DateTime CreationTime { get; set; }
 
-    public Video(string title, int year, long size, string DriveLocation, DateTime CreationTime)
+    public Video(string title, int year, long size, string driveLocation, DateTime creationTime)
     {
         this.Title = title;
         this.Year = year;
         this.Size = size;
-        this.DriveLocation = DriveLocation;
-        this.CreationTime = CreationTime;
+        this.DriveLocation = driveLocation;
+        this.CreationTime = creationTime;
     }
 }
-
