@@ -52,73 +52,73 @@ namespace VideoChecking
                 }
             };
 
-            //GraphQLRequest createTvShow = new GraphQLRequest
-            //{
-            //    Query = @" mutation createTvShows($tvShows: [TvShowInput]) {
-            //                createTvShows(TvShows: $tvShows) {
-            //                  message
-            //                },
-            //              }",
-            //    OperationName = "createTvShows",
-            //    Variables = new
-            //    {
-            //        TvShows = Program.listOfTvShows,
-            //    }
-            //};
+            GraphQLRequest createTvShow = new GraphQLRequest
+            {
+                Query = @" mutation createTvShows($tvShows: [TvShowInput]) {
+                            createTvShows(TvShows: $tvShows) {
+                              message
+                            },
+                          }",
+                OperationName = "createTvShows",
+                Variables = new
+                {
+                    TvShows = Program.listOfTvShows,
+                }
+            };
 
-            //GraphQLRequest createDocumentaryMovies = new GraphQLRequest
-            //{
-            //    Query = @" mutation createDocumentaryMovies($documentaryMovies: [MovieInput]) {
-            //                createDocumentaryMovies(DocumentaryMovies: $documentaryMovies) {
-            //                  message
-            //                },
-            //              }",
-            //    OperationName = "createDocumentaryMovies",
-            //    Variables = new
-            //    {
-            //        DocumentaryMovies = Program.listOfDocumentaryMovies,
-            //    }
-            //};
+            GraphQLRequest createDocumentaryMovies = new GraphQLRequest
+            {
+                Query = @" mutation createDocumentaryMovies($documentaryMovies: [MovieInput]) {
+                            createDocumentaryMovies(DocumentaryMovies: $documentaryMovies) {
+                              message
+                            },
+                          }",
+                OperationName = "createDocumentaryMovies",
+                Variables = new
+                {
+                    DocumentaryMovies = Program.listOfDocumentaryMovies,
+                }
+            };
 
-            //GraphQLRequest createDocumentaryTv = new GraphQLRequest
-            //{
-            //    Query = @" mutation createDocumentaryTvShows($documentaryTv: [TvShowInput]) {
-            //                createDocumentaryTvShows(DocumentaryTv: $documentaryTv) {
-            //                  message
-            //                },
-            //              }",
-            //    OperationName = "createDocumentaryTvShows",
-            //    Variables = new
-            //    {
-            //        DocumentaryTv = Program.listOfDocumentaryTv,
-            //    }
-            //};
+            GraphQLRequest createDocumentaryTv = new GraphQLRequest
+            {
+                Query = @" mutation createDocumentaryTvShows($documentaryTv: [TvShowInput]) {
+                            createDocumentaryTvShows(DocumentaryTv: $documentaryTv) {
+                              message
+                            },
+                          }",
+                OperationName = "createDocumentaryTvShows",
+                Variables = new
+                {
+                    DocumentaryTv = Program.listOfDocumentaryTv,
+                }
+            };
 
-            //GraphQLRequest createDrives = new GraphQLRequest
-            //{
-            //    Query = @" mutation createDrives($drives: [DriveInput]) {
-            //                createDrives(Drives: $drives) {
-            //                  message
-            //                },
-            //              }",
-            //    OperationName = "createDrives",
-            //    Variables = new
-            //    {
-            //        Drives = Program.listOfDrives
-            //    }
-            //};
+            GraphQLRequest createDrives = new GraphQLRequest
+            {
+                Query = @" mutation createDrives($drives: [DriveInput]) {
+                            createDrives(Drives: $drives) {
+                              message
+                            },
+                          }",
+                OperationName = "createDrives",
+                Variables = new
+                {
+                    Drives = Program.listOfDrives
+                }
+            };
 
             var graphQLCreateMoviesResponse = await graphQLClient.SendQueryAsync<CreateMoviesResponseModel>(createMovies);
-            //var graphQLCreateTvShowsResponse = await graphQLClient.SendQueryAsync<CreateTvShowsResponseModel>(createTvShow);
-            //var graphQLCreateDocumentaryMoviesResponse = await graphQLClient.SendQueryAsync<CreateDocumentaryMoviesResponseModel>(createDocumentaryMovies);
-            //var graphQLCreateDocumentaryTvResponse = await graphQLClient.SendQueryAsync<CreateDocumentaryTvResponseModel>(createDocumentaryTv);
-            //var graphQLCreateDrivesResponse = await graphQLClient.SendQueryAsync<CreateDrivesResponseModel>(createDrives);
+            var graphQLCreateTvShowsResponse = await graphQLClient.SendQueryAsync<CreateTvShowsResponseModel>(createTvShow);
+            var graphQLCreateDocumentaryMoviesResponse = await graphQLClient.SendQueryAsync<CreateDocumentaryMoviesResponseModel>(createDocumentaryMovies);
+            var graphQLCreateDocumentaryTvResponse = await graphQLClient.SendQueryAsync<CreateDocumentaryTvResponseModel>(createDocumentaryTv);
+            var graphQLCreateDrivesResponse = await graphQLClient.SendQueryAsync<CreateDrivesResponseModel>(createDrives);
 
             Console.WriteLine("POST: " + graphQLCreateMoviesResponse.Data.CreateMovies.Message + Environment.NewLine);
-            //Console.WriteLine("POST: " + graphQLCreateTvShowsResponse.Data.CreateTvShows.Message + Environment.NewLine);
-            //Console.WriteLine("POST: " + graphQLCreateDocumentaryMoviesResponse.Data.CreateDocumentaryMovies.Message + Environment.NewLine);
-            //Console.WriteLine("POST: " + graphQLCreateDocumentaryTvResponse.Data.CreateDocumentaryTv.Message + Environment.NewLine);
-            //Console.WriteLine("POST: " + graphQLCreateDrivesResponse.Data.CreateDrives.Message + Environment.NewLine);
+            Console.WriteLine("POST: " + graphQLCreateTvShowsResponse.Data.CreateTvShows.Message + Environment.NewLine);
+            Console.WriteLine("POST: " + graphQLCreateDocumentaryMoviesResponse.Data.CreateDocumentaryMovies.Message + Environment.NewLine);
+            Console.WriteLine("POST: " + graphQLCreateDocumentaryTvResponse.Data.CreateDocumentaryTv.Message + Environment.NewLine);
+            Console.WriteLine("POST: " + graphQLCreateDrivesResponse.Data.CreateDrives.Message + Environment.NewLine);
         }
 
         private static async Task GetJsonData()
