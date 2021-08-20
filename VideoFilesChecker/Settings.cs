@@ -7,21 +7,27 @@ public class Settings
     public string[] VideoPaths { get; set; }
     public string VideosJsonPath { get; set; }
     public string ExceptionLoggerPath { get; set; }
-    public string PostUrl { get; set; }
-    public string GetUrl { get; set; }
+    public string ServerUrl { get; set; }
+    public string AccessToken { get; set; }
+    public string RefreshToken { get; set; }
     public string BearerToken { get; set; }
+    public string EmailAddress { get; set; }
+    public string Password { get; set; }
     public string PlexLibrariesRefreshString { get; set; }
     public bool RefreshLibraries { get; set; }
 
-    public Settings(string[] videoPaths, string videosJsonPath, string exceptionLoggerPath, string postUrl, string getUrl, string bearerToken, string plexLibrariesRefreshString
+    public Settings(string[] videoPaths, string videosJsonPath, string exceptionLoggerPath, string serverUrl, string accessToken, string refreshToken, string bearerToken, string emailAddress, string password, string plexLibrariesRefreshString
         , bool refreshLibraries)
     {
         this.VideoPaths = videoPaths;
         this.VideosJsonPath = videosJsonPath;
         this.ExceptionLoggerPath = exceptionLoggerPath;
-        this.PostUrl = postUrl;
-        this.GetUrl = getUrl;
+        this.ServerUrl = serverUrl;
+        this.AccessToken = accessToken;
+        this.RefreshToken = refreshToken;
         this.BearerToken = bearerToken;
+        this.EmailAddress = emailAddress;
+        this.Password = password;
         this.PlexLibrariesRefreshString = plexLibrariesRefreshString;
         this.RefreshLibraries = refreshLibraries;
     }

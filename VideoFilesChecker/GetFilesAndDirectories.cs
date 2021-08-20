@@ -224,11 +224,9 @@ namespace GetVideoData
 
         private static void GenerateJsonVideoFile()
         {
-            List<DriveModel> drives = DrivesModel.GetDrives();
-
             string videoData = JsonConvert.SerializeObject(new
             {
-                Drives = drives,
+                Drives = Program.listOfDrives,
                 Movies = Program.listOfMovies,
                 TvShows = Program.listOfTvShows,
                 DocumentaryMovies = Program.listOfDocumentaryMovies,

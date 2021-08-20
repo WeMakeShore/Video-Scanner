@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using ExceptionHandler;
 using System.Threading.Tasks;
 using GetVideoData;
+using VideoFilesChecker;
+using VideoFilesChecker.Drive;
 
 namespace VideoChecking
 {
@@ -19,6 +21,7 @@ namespace VideoChecking
         public static List<Show> listOfTvShows = new List<Show>();
         public static List<Video> listOfDocumentaryMovies = new List<Video>();
         public static List<Show> listOfDocumentaryTv = new List<Show>();
+        public static List<DriveModel> listOfDrives = DrivesModel.GetDrives();
 
         static void Main(string[] args)
         {
@@ -49,29 +52,8 @@ namespace VideoChecking
             //}
 
             GetFilesAndDirectories.UpdateVideosAndDirectories();
-
-
-            //if (!VideoChecker.VideoChangesFound())
-            //{
-            //    Console.WriteLine("No Changes found.\n");
-
-            //    Task.Run(async () => { await CreateHttpRequest.CreateGETRequest(); }).Wait();
-
-            //    PrintGETData();
-
-            //    VideoDeletion.CheckForVideosToDelete();
-
-            //    VideoDeletion.DeleteVideos();
-
-            //    Exceptions.RemovePreviousExceptionLog();
-
-            //    if (VideoDeletion.videosDeleted)
-            //    {
-            //        Console.ReadKey();
-            //    }
-
-            //    Environment.Exit(0);
-            //}
+            
+            Task.Run(async () => { await CreateHttpRequest.Login(); }).Wait();
 
             Task.Run(async () => { await CreateHttpRequest.CreateGETRequest(); }).Wait();
 
@@ -79,7 +61,9 @@ namespace VideoChecking
 
             VideoDeletion.DeleteVideos();
 
-            Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(GetFilesAndDirectories.GetSerializedJsonVideoFileData());}).Wait();
+            Task.Run(async () => { await CreateHttpRequest.CreatePOSTRequest(); }).Wait();
+
+            Task.Run(async () => { await CreateHttpRequest.Logout(); }).Wait();
 
             if (settings.RefreshLibraries == true)
             {
