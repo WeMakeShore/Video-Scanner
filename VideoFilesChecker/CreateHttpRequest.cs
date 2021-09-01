@@ -192,7 +192,6 @@ namespace VideoChecking
             }
             Program.settings.AccessToken = graphQLLoginResponse.Data.Login.AccessToken;
             Program.settings.RefreshToken = graphQLLoginResponse.Data.Login.RefreshToken;
-            graphQLClient.HttpClient.DefaultRequestHeaders.Add("authorization", "Bearer " + graphQLLoginResponse.Data.Login.AccessToken);
         }
 
         public static async Task Logout()
