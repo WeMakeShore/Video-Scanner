@@ -109,15 +109,18 @@ namespace VideoChecking
             };
 
             var graphQLCreateMoviesResponse = await graphQLClient.SendQueryAsync<CreateMoviesResponseModel>(createMovies);
-            var graphQLCreateTvShowsResponse = await graphQLClient.SendQueryAsync<CreateTvShowsResponseModel>(createTvShow);
-            var graphQLCreateDocumentaryMoviesResponse = await graphQLClient.SendQueryAsync<CreateDocumentaryMoviesResponseModel>(createDocumentaryMovies);
-            var graphQLCreateDocumentaryTvResponse = await graphQLClient.SendQueryAsync<CreateDocumentaryTvResponseModel>(createDocumentaryTv);
-            var graphQLCreateDrivesResponse = await graphQLClient.SendQueryAsync<CreateDrivesResponseModel>(createDrives);
-
             Console.WriteLine("POST: " + graphQLCreateMoviesResponse.Data.CreateMovies.Message + Environment.NewLine);
+
+            var graphQLCreateTvShowsResponse = await graphQLClient.SendQueryAsync<CreateTvShowsResponseModel>(createTvShow);
             Console.WriteLine("POST: " + graphQLCreateTvShowsResponse.Data.CreateTvShows.Message + Environment.NewLine);
+
+            var graphQLCreateDocumentaryMoviesResponse = await graphQLClient.SendQueryAsync<CreateDocumentaryMoviesResponseModel>(createDocumentaryMovies);
             Console.WriteLine("POST: " + graphQLCreateDocumentaryMoviesResponse.Data.CreateDocumentaryMovies.Message + Environment.NewLine);
+
+            var graphQLCreateDocumentaryTvResponse = await graphQLClient.SendQueryAsync<CreateDocumentaryTvResponseModel>(createDocumentaryTv);
             Console.WriteLine("POST: " + graphQLCreateDocumentaryTvResponse.Data.CreateDocumentaryTv.Message + Environment.NewLine);
+
+            var graphQLCreateDrivesResponse = await graphQLClient.SendQueryAsync<CreateDrivesResponseModel>(createDrives);
             Console.WriteLine("POST: " + graphQLCreateDrivesResponse.Data.CreateDrives.Message + Environment.NewLine);
         }
 
